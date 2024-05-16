@@ -5,8 +5,17 @@ import java.time.LocalDate;
 public class Persona {
     private String nombre;
     private String apellido;
-    private long dni;
+    private String dni;
     private LocalDate fechaNacimiento;
+   
+    public Persona(){}
+    public Persona(String nombre, String apellido, String dni) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+    }
+    
+    
 
     public String getNombre() {
         return nombre;
@@ -24,11 +33,11 @@ public class Persona {
         this.apellido = apellido;
     }
 
-    public long getDni() {
+    public String getDni() {
         return dni;
     }
 
-    public void setDni(long dni) {
+    public void setDni(String dni) {
         this.dni = dni;
     }
 

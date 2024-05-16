@@ -1,12 +1,14 @@
-package ar.edu.utn.frbb.tup;
-
-import ar.edu.utn.frbb.tup.utils.Cliente;
+package ar.edu.utn.frbb.tup.utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Banco {
-    private List<Cliente> clientes = new ArrayList<>();
+    private List<Cliente> clientes;
+
+    public Banco() {
+        this.clientes = new ArrayList<>();
+    }
 
     public List<Cliente> getClientes() {
         return clientes;

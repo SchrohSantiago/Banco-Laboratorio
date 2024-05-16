@@ -1,13 +1,13 @@
-package ar.edu.utn.frbb.tup;
+package ar.edu.utn.frbb.tup.process;
 
 import ar.edu.utn.frbb.tup.utils.Cliente;
-import ar.edu.utn.frbb.tup.utils.TipoPersona;
+import ar.edu.utn.frbb.tup.utils.enums.TipoPersona;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClienteInputProcessor extends BaseInputProcessor{
+public class ClienteInputProcessor extends BaseInputProcessor {
 
     private static List<Cliente> clientes = new ArrayList<>();
 
@@ -15,7 +15,7 @@ public class ClienteInputProcessor extends BaseInputProcessor{
 
         // Ingreso de datos del Cliente
         Cliente cliente = new Cliente();
-        clearScreen();
+       
         System.out.println("Ingrese el nombre del cliente:");
         String nombre = scanner.nextLine();
         cliente.setNombre(nombre);
@@ -24,10 +24,14 @@ public class ClienteInputProcessor extends BaseInputProcessor{
         String apellido = scanner.nextLine();
         cliente.setApellido(apellido);
 
-        System.out.println("Ingrese el tipo de persona Física(F) o Jurídica(J):");
+        System.out.println("Ingrese el dni:");
+        String dni = scanner.nextLine();
+        cliente.setDni(dni);
+
+        System.out.println("Ingrese el tipo de persona Fisica(F) o Juridica(J):");
         String tipoPersonaStr = scanner.nextLine().toUpperCase();
         while (!tipoPersonaStr.equals("F") && !tipoPersonaStr.equals("J")) {
-            System.out.println("Tipo de persona inválido. Ingrese NATURAL o JURIDICA:");
+            System.out.println("Tipo de persona invalido. Ingrese NATURAL o JURIDICA:");
             tipoPersonaStr = scanner.nextLine().toUpperCase();
         }
         TipoPersona tipoPersona = TipoPersona.fromString(tipoPersonaStr);
@@ -45,12 +49,25 @@ public class ClienteInputProcessor extends BaseInputProcessor{
                 fechaAlta = LocalDate.parse(scanner.nextLine());
                 fechaValida = true;
             } catch (Exception e) {
-                System.out.println("Formato de fecha inválido. Ingrese la fecha en formato YYYY-MM-DD:");
+                System.out.println("Formato de fecha invalido. Ingrese la fecha en formato YYYY-MM-DD:");
             }
         }
         cliente.setFechaAlta(fechaAlta);
+
+        cliente.setCbu(cliente.generarCbu());
+
+        System.out.println("Ingrese el telefono del cliente:");
+        String telefono = scanner.nextLine();
+        cliente.setTelefono(telefono);
+
+        System.out.println("Ingrese la direccion del cliente:");
+        String direccion = scanner.nextLine();
+        cliente.setDireccion(direccion);
+
+        clientes.add(cliente);
 
         clearScreen();
         return cliente;
     }
 }
+

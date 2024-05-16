@@ -1,15 +1,54 @@
 package ar.edu.utn.frbb.tup.utils;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Random; // Libreria de java para generar numeros random, en este caso para nuestro CBU 
 import java.util.Set;
+import java.util.UUID; // importamos UUID para generar un id
 
-public class Cliente extends Persona{
+import ar.edu.utn.frbb.tup.utils.enums.TipoPersona;
 
+public class Cliente extends Persona {
+    private String id;
+    private String direccion;
+    private String telefono;
     private TipoPersona tipoPersona;
     private String banco;
     private LocalDate fechaAlta;
-    private Set<Cuenta> cuentas = new HashSet<>();
+    private List<Cuenta> cuentas = new ArrayList<>();
+    private String cbu;
+
+    public Cliente(){};
+    public Cliente(String nombre, String apellido, String dni, String direccion, String telefono, String banco) {
+        super(nombre, apellido, dni);
+        this.id = UUID.randomUUID().toString();
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.banco = banco;
+        this.cbu = generarCbu();
+    }
+    
+    public String getId() {
+        return id;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
 
     public TipoPersona getTipoPersona() {
         return tipoPersona;
@@ -35,11 +74,48 @@ public class Cliente extends Persona{
         this.fechaAlta = fechaAlta;
     }
 
-    public Set<Cuenta> getCuentas() {
+    public List<Cuenta> getCuentas() {
         return cuentas;
     }
 
     public void addCuenta(Cuenta cuenta) {
         this.cuentas.add(cuenta);
     }
+
+    public void eliminarCuenta(Cuenta cuenta) {
+        this.cuentas.remove(cuenta);
+    }
+
+    public String getCbu(){
+        return cbu;
+    }
+
+    public void setCbu(String cbu){
+        this.cbu = cbu;
+    }
+
+    public String generarCbu() {
+        Random random = new Random();
+        StringBuilder randomCbu = new StringBuilder();
+
+        for (int i = 0; i < 11; i++) {
+            int digito = random.nextInt(10); // Generar un número aleatorio entre 0 y 9
+            randomCbu.append(digito);
+        }
+
+        return randomCbu.toString();
+    }
+
+    public Cliente buscarClienteDni(String dni, List<Cliente> clientes) {
+
+        for (Cliente cliente : clientes) {
+            if (cliente.getDni().equals(dni)) {
+                return cliente; 
+            }
+        }
+        return null;
+    }
+
+
+    
 }
