@@ -105,14 +105,7 @@ public class Cuenta {
         movimientos.add(movimiento);
     }
 
-    public Cuenta buscarCuentaPorNumero(int numeroCuenta) {
-        for (Cuenta cuenta : numeroCuentas) {
-            if (cuenta.getNumeroCuenta() == (numeroCuenta)) {
-                return cuenta;
-            }
-        }
-        return null;
-    }
+  
 
     public List<Movimiento> getMovimientos() {
         return movimientos;
@@ -138,6 +131,15 @@ public class Cuenta {
         for (Cuenta cuenta : cuentas) {
             System.out.println("Numero de cuenta: " + cuenta.getNumeroCuenta());
         }
+    }
+
+    public Cuenta buscarCuentaPorNumero(int numeroCuenta, List<Cuenta> cuentas) {
+        for (Cuenta cuenta : cuentas) {
+            if (cuenta.getNumeroCuenta() == numeroCuenta) {
+                return cuenta;
+            }
+        }
+        return null;
     }
 
     @Override

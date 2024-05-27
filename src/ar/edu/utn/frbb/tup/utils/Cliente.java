@@ -86,6 +86,10 @@ public class Cliente extends Persona {
         this.cuentas.remove(cuenta);
     }
 
+    public void setCuentas(List<Cuenta> cuentas) {
+        this.cuentas = cuentas;
+    }
+
     public String getCbu(){
         return cbu;
     }
@@ -104,18 +108,5 @@ public class Cliente extends Persona {
         }
 
         return randomCbu.toString();
-    }
-
-    public Cliente buscarClienteDni(String dni, List<Cliente> clientes) {
-
-        for (Cliente cliente : clientes) {
-            if (cliente.getDni().equals(dni)) {
-                return cliente; 
-            }
-        }
-        return null;
-    }
-
-
-    
+    }    
 }
