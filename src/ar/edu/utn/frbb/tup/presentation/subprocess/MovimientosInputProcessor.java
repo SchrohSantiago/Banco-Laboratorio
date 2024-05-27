@@ -1,11 +1,12 @@
-package ar.edu.utn.frbb.tup.process;
+package ar.edu.utn.frbb.tup.presentation.subprocess;
 
 import java.util.List;
 import java.util.Scanner;
-import ar.edu.utn.frbb.tup.utils.Banco;
-import ar.edu.utn.frbb.tup.utils.Cliente;
-import ar.edu.utn.frbb.tup.utils.Cuenta;
-import ar.edu.utn.frbb.tup.utils.Movimiento;
+
+import ar.edu.utn.frbb.tup.model.Banco;
+import ar.edu.utn.frbb.tup.model.person.Cliente;
+import ar.edu.utn.frbb.tup.model.person.Cuenta;
+import ar.edu.utn.frbb.tup.model.operation.Movimiento;
 
 public class MovimientosInputProcessor {
 

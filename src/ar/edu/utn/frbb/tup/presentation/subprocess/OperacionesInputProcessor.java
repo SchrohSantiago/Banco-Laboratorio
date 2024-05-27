@@ -1,10 +1,10 @@
-package ar.edu.utn.frbb.tup.process;
-
-import ar.edu.utn.frbb.tup.utils.Cliente;
-import ar.edu.utn.frbb.tup.utils.Cuenta;
+package ar.edu.utn.frbb.tup.presentation.subprocess;
 
 import java.util.List;
 import java.util.Scanner;
+
+import ar.edu.utn.frbb.tup.model.person.Cliente;
+import ar.edu.utn.frbb.tup.model.person.Cuenta;
 
 public class OperacionesInputProcessor {
     private Scanner scanner = new Scanner(System.in);

@@ -1,14 +1,11 @@
-package ar.edu.utn.frbb.tup.utils;
+package ar.edu.utn.frbb.tup.model.person;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Random; // Libreria de java para generar numeros random, en este caso para nuestro CBU 
-import java.util.Set;
-import java.util.UUID; // importamos UUID para generar un id
+import java.util.UUID;
 
-import ar.edu.utn.frbb.tup.utils.enums.TipoPersona;
+import ar.edu.utn.frbb.tup.model.enums.TipoPersona;
 
 public class Cliente extends Persona {
     private String id;
@@ -20,14 +17,17 @@ public class Cliente extends Persona {
     private List<Cuenta> cuentas = new ArrayList<>();
     private String cbu;
 
-    public Cliente(){};
+    public Cliente() {
+        this.id = UUID.randomUUID().toString(); // Genera un ID único para cada cliente
+    }
+
     public Cliente(String nombre, String apellido, String dni, String direccion, String telefono, String banco) {
         super(nombre, apellido, dni);
-        this.id = UUID.randomUUID().toString();
+        this.id = UUID.randomUUID().toString(); // Genera un ID único para cada cliente
         this.direccion = direccion;
         this.telefono = telefono;
         this.banco = banco;
-        this.cbu = generarCbu();
+        this.cbu = generarCbu(); // Genera un CBU
     }
     
     public String getId() {
@@ -90,23 +90,15 @@ public class Cliente extends Persona {
         this.cuentas = cuentas;
     }
 
-    public String getCbu(){
+    public String getCbu() {
         return cbu;
     }
 
-    public void setCbu(String cbu){
+    public void setCbu(String cbu) {
         this.cbu = cbu;
     }
 
-    public String generarCbu() {
-        Random random = new Random();
-        StringBuilder randomCbu = new StringBuilder();
-
-        for (int i = 0; i < 11; i++) {
-            int digito = random.nextInt(10); // Generar un número aleatorio entre 0 y 9
-            randomCbu.append(digito);
-        }
-
-        return randomCbu.toString();
-    }    
+    private String generarCbu() {
+        return UUID.randomUUID().toString().replace("-", "").substring(0, 22); // Genera un CBU de 22 caracteres
+    }
 }

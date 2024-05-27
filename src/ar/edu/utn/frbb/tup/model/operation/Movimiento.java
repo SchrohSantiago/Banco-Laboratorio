@@ -1,8 +1,8 @@
-package ar.edu.utn.frbb.tup.utils;
+package ar.edu.utn.frbb.tup.model.operation;
 
 import java.time.LocalDateTime;
 
-import ar.edu.utn.frbb.tup.utils.enums.TipoOperacion;
+import ar.edu.utn.frbb.tup.model.enums.TipoOperacion;
 
 
 public class Movimiento {

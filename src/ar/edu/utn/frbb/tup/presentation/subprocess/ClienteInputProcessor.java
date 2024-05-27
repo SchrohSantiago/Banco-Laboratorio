@@ -1,11 +1,11 @@
-package ar.edu.utn.frbb.tup.process;
-
-import ar.edu.utn.frbb.tup.utils.Cliente;
-import ar.edu.utn.frbb.tup.utils.enums.TipoPersona;
+package ar.edu.utn.frbb.tup.presentation.subprocess;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import ar.edu.utn.frbb.tup.model.person.Cliente;
+import ar.edu.utn.frbb.tup.model.enums.TipoPersona;
 
 public class ClienteInputProcessor extends BaseInputProcessor {
 

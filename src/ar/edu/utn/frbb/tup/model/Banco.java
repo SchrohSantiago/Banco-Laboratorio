@@ -1,7 +1,9 @@
-package ar.edu.utn.frbb.tup.utils;
+package ar.edu.utn.frbb.tup.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import ar.edu.utn.frbb.tup.model.person.Cliente;
+import ar.edu.utn.frbb.tup.model.person.Cuenta;
 
 public class Banco {
     private List<Cliente> clientes;
@@ -19,11 +21,8 @@ public class Banco {
     }
 
     public Cliente buscarClientePorDni(String dni) {
-        System.out.println(dni);
-        System.out.println(clientes);
         for (Cliente cliente : clientes) {
             if (cliente.getDni().equals(dni)) {
-                System.out.println("Cliente encontrado");
                 return cliente; 
             }
         }

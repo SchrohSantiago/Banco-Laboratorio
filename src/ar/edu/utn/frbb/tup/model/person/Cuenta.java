@@ -1,11 +1,12 @@
-package ar.edu.utn.frbb.tup.utils;
+package ar.edu.utn.frbb.tup.model.person;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.edu.utn.frbb.tup.utils.enums.TipoCuenta;
-import ar.edu.utn.frbb.tup.utils.enums.TipoOperacion;
+import ar.edu.utn.frbb.tup.model.enums.TipoCuenta;
+import ar.edu.utn.frbb.tup.model.enums.TipoOperacion;
+import ar.edu.utn.frbb.tup.model.operation.Movimiento;
 
 public class Cuenta {
     private Cliente cliente; 

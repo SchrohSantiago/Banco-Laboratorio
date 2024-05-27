@@ -1,7 +1,7 @@
 package ar.edu.utn.frbb.tup;
 
-import ar.edu.utn.frbb.tup.process.MenuInputProcessor;
-import ar.edu.utn.frbb.tup.utils.Banco;
+import ar.edu.utn.frbb.tup.model.Banco;
+import ar.edu.utn.frbb.tup.presentation.MenuInputProcessor;
 
 
 class Aplicacion {

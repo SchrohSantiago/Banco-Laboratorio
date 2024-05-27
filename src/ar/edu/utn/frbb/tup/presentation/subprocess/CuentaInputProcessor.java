@@ -1,12 +1,12 @@
-package ar.edu.utn.frbb.tup.process;
-
-import ar.edu.utn.frbb.tup.utils.Cuenta;
-import ar.edu.utn.frbb.tup.utils.enums.TipoCuenta;
-import ar.edu.utn.frbb.tup.utils.Cliente;
-import ar.edu.utn.frbb.tup.utils.Banco;
+package ar.edu.utn.frbb.tup.presentation.subprocess;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
+
+import ar.edu.utn.frbb.tup.model.Banco;
+import ar.edu.utn.frbb.tup.model.person.Cliente;
+import ar.edu.utn.frbb.tup.model.person.Cuenta;
+import ar.edu.utn.frbb.tup.model.enums.TipoCuenta;
 
 public class CuentaInputProcessor {
 
