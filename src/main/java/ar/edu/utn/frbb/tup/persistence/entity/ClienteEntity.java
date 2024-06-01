@@ -21,7 +21,7 @@ public class ClienteEntity extends BaseEntity {
     private List<Long> cuentas;
 
     public ClienteEntity(Cliente cliente) {  // Pasamos por parametros al objeto cliente
-        super(Long.parseLong(cliente.getId())); // Usa el ID del cliente
+       // Usa el ID del cliente
         this.tipoPersona = cliente.getTipoPersona() != null ? cliente.getTipoPersona().getDescripcion() : null;
         this.nombre = cliente.getNombre();
         this.apellido = cliente.getApellido();
@@ -34,7 +34,7 @@ public class ClienteEntity extends BaseEntity {
         if (cliente.getCuentas() != null && !cliente.getCuentas().isEmpty()) {
             this.cuentas = new ArrayList<>();
             for (Cuenta c : cliente.getCuentas()) {
-                cuentas.add(c.getNumeroCuenta());
+               
             }
         }
     }
@@ -50,7 +50,7 @@ public class ClienteEntity extends BaseEntity {
         cliente.setTelefono(this.telefono);
         cliente.setBanco(this.banco);
         cliente.setCbu(this.cbu);
-        cliente.setId(this.getId().toString());
+      
         return cliente;
     }
 
@@ -58,6 +58,6 @@ public class ClienteEntity extends BaseEntity {
         if (cuentas == null) {
             cuentas = new ArrayList<>();
         }
-        cuentas.add(cuenta.getNumeroCuenta());
+      
     }
 }

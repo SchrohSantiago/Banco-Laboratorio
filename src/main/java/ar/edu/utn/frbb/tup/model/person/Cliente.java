@@ -98,7 +98,7 @@ public class Cliente extends Persona {
         this.cbu = cbu;
     }
 
-    private String generarCbu() {
+    public String generarCbu() {
         return UUID.randomUUID().toString().replace("-", "").substring(0, 22); // Genera un CBU de 22 caracteres
     }
 }
