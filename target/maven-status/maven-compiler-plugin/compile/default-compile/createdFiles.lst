@@ -11,6 +11,7 @@ ar\edu\utn\frbb\tup\model\Banco.class
 ar\edu\utn\frbb\tup\presentation\subprocess\CuentaInputProcessor.class
 ar\edu\utn\frbb\tup\persistence\entity\BaseEntity.class
 ar\edu\utn\frbb\tup\persistence\MovimientoDao.class
+ar\edu\utn\frbb\tup\service\OperacionService.class
 ar\edu\utn\frbb\tup\model\enums\TipoOperacion.class
 ar\edu\utn\frbb\tup\service\CuentaService.class
 ar\edu\utn\frbb\tup\persistence\CuentaDao.class
@@ -20,6 +21,7 @@ ar\edu\utn\frbb\tup\presentation\subprocess\ClienteInputProcessor.class
 ar\edu\utn\frbb\tup\persistence\entity\MovimientoEntity.class
 ar\edu\utn\frbb\tup\presentation\MenuInputProcessor.class
 ar\edu\utn\frbb\tup\persistence\ClienteDao.class
+ar\edu\utn\frbb\tup\model\operation\Operaciones.class
 ar\edu\utn\frbb\tup\presentation\subprocess\BaseInputProcessor.class
 ar\edu\utn\frbb\tup\model\person\Cuenta.class
 ar\edu\utn\frbb\tup\presentation\subprocess\ShowInfoCliente.class

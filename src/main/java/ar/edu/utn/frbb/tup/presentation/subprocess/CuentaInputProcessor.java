@@ -67,28 +67,24 @@ public class CuentaInputProcessor {
                     break;
             }
 
-           
-         
-
             try {
-                cuenta.setCliente(clienteEncontrado);
-                clienteService.agregarCuenta(clienteEncontrado.getDni(), cuenta);
-                clienteService.darAltaCliente(clienteEncontrado);
+               
+                
                 cuentaService.darDeAltaCuenta(cuenta);
-                System.out.println("Cuenta creada con éxito");
-            } catch (Exception e) {
-                System.out.println("Error al dar de alta la cuenta: " + e.getMessage());
-                throw new RuntimeException(e);
-            }
-            
-            
-            
-            System.out.println("Cuenta creada exitosamente para el cliente con DNI " + dni
+                clienteService.agregarCuenta(clienteEncontrado.getDni(), cuenta);
+                
+                System.out.println("Cuenta creada exitosamente para el cliente con DNI " + dni
                     + ". Numero de cuenta: " + cuenta.getNumeroCuenta()
                     + ", Saldo inicial: " + cuenta.getBalance()
                     + ", Tipo de cuenta: " + cuenta.getTipoCuenta().name());
 
-            return cuenta;
+                return cuenta;
+
+            } catch (Exception e) {
+                System.out.println("Error al dar de alta la cuenta: " + e.getMessage());
+                throw new RuntimeException(e);
+            }
+
         } else {
             System.out.println("El cliente no existe en la lista del banco.");
             return null;

@@ -17,18 +17,16 @@ public class Cliente extends Persona {
     private List<Cuenta> cuentas = new ArrayList<>();
     private String cbu;
 
-    public Cliente() {
-        this.id = UUID.randomUUID().toString(); // Genera un ID único para cada cliente
-    }
-
+    public Cliente() {}
     public Cliente(String nombre, String apellido, Long dni, String direccion, String telefono, String banco, LocalDate fechaAlta) {
         super(nombre, apellido, dni);
         this.id = UUID.randomUUID().toString(); // Genera un ID único para cada cliente
-        this.direccion = direccion;
-        this.telefono = telefono;
-        this.banco = banco;
+        this.direccion = getDireccion();
+        this.telefono = getTelefono();
+        this.banco = getBanco();
         this.cbu = generarCbu(); // Genera un CBU
-        this.fechaAlta = LocalDate.now(); // Genera la fecha de alta
+        this.fechaAlta = getFechaAlta(); // Genera la fecha de alta
+        this.cuentas = getCuentas();
     }
     
     public String getId() {

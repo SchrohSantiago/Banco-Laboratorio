@@ -10,13 +10,11 @@ public class Persona {
    
     public Persona(){}
     public Persona(String nombre, String apellido, Long dni) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.dni = dni;
+        this.nombre = getNombre();
+        this.apellido = getApellido();
+        this.dni = getDni();
     }
     
-    
-
     public String getNombre() {
         return nombre;
     }

@@ -19,8 +19,9 @@ public class ClienteDao extends AbstractBaseDao{
     }
 
     public void save(Cliente cliente) {
-        ClienteEntity entity = new ClienteEntity(cliente); // Ya convertido en una entidad para poder guardarlo en la base de datos, creamos una entidad con el cliente que se quiere guardar
-        getInMemoryDatabase().put(entity.getId(), entity);
+        ClienteEntity entity = new ClienteEntity(cliente);
+        entity.setId(cliente.getDni());
+        getInMemoryDatabase().put(cliente.getDni(), entity);
     }
 
     public List<Cliente> getAll() {

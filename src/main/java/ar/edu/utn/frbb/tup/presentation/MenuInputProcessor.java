@@ -13,8 +13,8 @@ public class MenuInputProcessor extends BaseInputProcessor {
     private ClienteInputProcessor clienteInputProcessor = new ClienteInputProcessor();
     private CuentaInputProcessor cuentaInputProcessor = new CuentaInputProcessor();
     private OperacionesInputProcessor operacionesInputProcessor = new OperacionesInputProcessor();
-    private MovimientosInputProcessor movimientosInputProcessor = new MovimientosInputProcessor();
-    private ShowInfoCliente showInfoCliente;
+
+    
     private ClienteService clienteService = new ClienteService();
 
 
@@ -52,7 +52,7 @@ public class MenuInputProcessor extends BaseInputProcessor {
                     cuentaInputProcessor.crearCuenta();
                     break;
                 case 3:
-                  
+                    operacionesInputProcessor.realizarOperacion();
                     break;
                 case 4:
                    

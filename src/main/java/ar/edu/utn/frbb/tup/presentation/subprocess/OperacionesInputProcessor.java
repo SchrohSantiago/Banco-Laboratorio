@@ -5,19 +5,42 @@ import java.util.Scanner;
 
 import ar.edu.utn.frbb.tup.model.person.Cliente;
 import ar.edu.utn.frbb.tup.model.person.Cuenta;
+import ar.edu.utn.frbb.tup.service.ClienteService;
+import ar.edu.utn.frbb.tup.service.CuentaService;
+import ar.edu.utn.frbb.tup.service.OperacionService;
 
 public class OperacionesInputProcessor {
     private Scanner scanner = new Scanner(System.in);
+    private ClienteService clienteService = new ClienteService();
+    private OperacionService operacionService = new OperacionService();
+    private CuentaService cuentaService = new CuentaService();
 
-    public void realizarOperacion(List<Cliente> clientes) {
+    public void realizarOperacion() {
         System.out.println("Ingrese el DNI del cliente:");
-        String dni = scanner.nextLine();
+        Long dni = scanner.nextLong();
 
-        Cliente cliente = buscarClientePorDni(dni, clientes);
+        Cliente cliente = clienteService.buscarClientePorDni(dni);
         if (cliente == null) {
             System.out.println("No se encontro un cliente con el DNI ingresado.");
             return;
         }
+
+        System.out.println("Ingrese el numero de cuenta:");
+        Long numeroCuenta = scanner.nextLong();
+        scanner.nextLine(); // Consumir el salto de linea despues de leer el entero
+
+        Cuenta cuenta = cuentaService.buscarCuentaPorNumero(numeroCuenta);
+
+        if(cuenta == null){
+            System.out.println("No se encontro una cuenta con el numero ingresado.");
+            return;
+        }
+
+        System.out.println("Ingrese el monto de la operacion:");
+        Double monto = scanner.nextDouble();
+        scanner.nextLine(); // Consumir el salto de linea despues de leer el entero
+
+
 
         System.out.println("Seleccione el tipo de operacion:");
         System.out.println("1. Retiro");
@@ -28,113 +51,31 @@ public class OperacionesInputProcessor {
 
         switch (opcion) {
             case 1:
-                realizarRetiro(cliente);
+                operacionService.retirar(numeroCuenta, monto);
                 break;
             case 2:
-                realizarDeposito(cliente);
+                operacionService.depositar(numeroCuenta, monto);
                 break;
             case 3:
-                realizarTransferencia(clientes, cliente);
+                System.out.println("Ingrese el numero de cuenta de destino:");
+                Long numeroCuentaDestino = scanner.nextLong();
+                scanner.nextLine(); // Consumir el salto de linea despues de leer el entero
+
+                Cuenta cuentaDestino = cuentaService.buscarCuentaPorNumero(numeroCuentaDestino);
+                if(cuentaDestino == null){
+                    System.out.println("No se encontro una cuenta con el numero ingresado.");
+                    return;
+                }
+
+                operacionService.transferir(numeroCuenta, numeroCuentaDestino, opcion);
                 break;
             default:
                 System.out.println("Opcion invalida.");
                 break;
         }
     }
-
-    private void realizarRetiro(Cliente cliente) {
-        System.out.println("Ingrese el numero de cuenta:");
-        int numeroCuenta = scanner.nextInt();
-        scanner.nextLine(); // Consumir el salto de linea despues de leer el entero
-
-        Cuenta cuenta = buscarCuentaPorNumero(numeroCuenta, cliente.getCuentas());
-        if (cuenta == null) {
-            System.out.println("No se encontro una cuenta con el numero ingresado.");
-            return;
-        }
-
-        System.out.println("Ingrese el monto a retirar:");
-        double monto = scanner.nextDouble();
-        scanner.nextLine(); // Consumir el salto de linea despues de leer el double
-
-        cuenta.retirar(monto);
-        System.out.println("Retiro realizado exitosamente. Nuevo saldo: " + cuenta.getBalance());
-    }
-
-    private void realizarDeposito(Cliente cliente) {
-        System.out.println("Ingrese el numero de cuenta:");
-        int numeroCuenta = scanner.nextInt();
-        scanner.nextLine(); // Consumir el salto de linea despues de leer el entero
-
-        Cuenta cuenta = buscarCuentaPorNumero(numeroCuenta, cliente.getCuentas());
-        if (cuenta == null) {
-            System.out.println("No se encontro una cuenta con el numero ingresado.");
-            return;
-        }
-
-        System.out.println("Ingrese el monto a depositar:");
-        double monto = scanner.nextDouble();
-        scanner.nextLine(); // Consumir el salto de linea despues de leer el double
-
-        cuenta.depositar(monto);
-        System.out.println("Deposito realizado exitosamente. Nuevo saldo: " + cuenta.getBalance());
-    }
-
-    private void realizarTransferencia(List<Cliente> clientes, Cliente cliente) {
-        System.out.println("Ingrese el numero de cuenta origen:");
-        int numeroCuentaOrigen = scanner.nextInt();
-        scanner.nextLine(); // Consumir el salto de linea despues de leer el entero
-
-        Cuenta cuentaOrigen = buscarCuentaPorNumero(numeroCuentaOrigen, cliente.getCuentas());
-        if (cuentaOrigen == null) {
-            System.out.println("No se encontro una cuenta origen con el numero ingresado.");
-            return;
-        }
-
-        System.out.println("Ingrese el DNI del cliente destino:");
-        String dniDestino = scanner.nextLine();
-
-        Cliente clienteDestino = buscarClientePorDni(dniDestino, clientes);
-        if (clienteDestino == null) {
-            System.out.println("No se encontro un cliente destino con el DNI ingresado.");
-            return;
-        }
-
-        System.out.println("Ingrese el numero de cuenta destino:");
-        int numeroCuentaDestino = scanner.nextInt();
-        scanner.nextLine(); // Consumir el salto de linea despues de leer el entero
-
-        Cuenta cuentaDestino = buscarCuentaPorNumero(numeroCuentaDestino, clienteDestino.getCuentas());
-        if (cuentaDestino == null) {
-            System.out.println("No se encontro una cuenta destino con el numero ingresado.");
-            return;
-        }
-
-        System.out.println("Ingrese el monto a transferir:");
-        double monto = scanner.nextDouble();
-        scanner.nextLine(); // Consumir el salto de linea despues de leer el double
-
-        cuentaOrigen.transferir(cuentaDestino, monto);
-        System.out.println("Transferencia realizada exitosamente.");
-        System.out.println("Nuevo saldo de la cuenta origen: " + cuentaOrigen.getBalance());
-        System.out.println("Nuevo saldo de la cuenta destino: " + cuentaDestino.getBalance());
-    }
-
-    private Cliente buscarClientePorDni(String dni, List<Cliente> clientes) {
-        for (Cliente cliente : clientes) {
-            if (cliente.getDni().equals(dni)) {
-                return cliente;
-            }
-        }
-        return null;
-    }
-
-    private Cuenta buscarCuentaPorNumero(int numeroCuenta, List<Cuenta> cuentas) {
-        for (Cuenta cuenta : cuentas) {
-            if (cuenta.getNumeroCuenta() == numeroCuenta) {
-                return cuenta;
-            }
-        }
-        return null;
-    }
 }
+   
+   
+
+    

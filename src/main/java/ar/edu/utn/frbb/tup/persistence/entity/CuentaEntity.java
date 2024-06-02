@@ -16,7 +16,7 @@ public class CuentaEntity extends BaseEntity{
     long numeroCuenta;
 
     public CuentaEntity(Cuenta cuenta) {
-        cuenta.getNumeroCuenta();
+        this.numeroCuenta = cuenta.getNumeroCuenta();
         this.balance = cuenta.getBalance();
         this.tipoCuenta = cuenta.getTipoCuenta().toString();
         this.titular = cuenta.getCliente().getDni();
@@ -25,15 +25,14 @@ public class CuentaEntity extends BaseEntity{
 
     public Cuenta toCuenta() {
         Cuenta cuenta = new Cuenta();
+
         cuenta.setBalance(this.balance);
         cuenta.setNumeroCuenta(this.numeroCuenta);
         cuenta.setTipoCuenta(TipoCuenta.valueOf(this.tipoCuenta));
         cuenta.setFechaCreacion(this.fechaCreacion);
-
-        ClienteDao clienteDao = new ClienteDao();
-        Cliente titular = clienteDao.find(this.titular);
-        cuenta.setCliente(titular);
-
+        Cliente cliente = new ClienteDao().find(this.titular);
+        cuenta.setCliente(cliente);
+        
         return cuenta;
     }
 }

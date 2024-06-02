@@ -6,7 +6,7 @@ import ar.edu.utn.frbb.tup.model.person.Cliente;
 import ar.edu.utn.frbb.tup.model.person.Cuenta;
 import ar.edu.utn.frbb.tup.persistence.ClienteDao;
 import ar.edu.utn.frbb.tup.persistence.CuentaDao;
-import ar.edu.utn.frbb.tup.persistence.entity.ClienteEntity;
+
 
 public class ClienteService {
     ClienteDao clienteDao = new ClienteDao();

@@ -13,7 +13,9 @@ public class CuentaDao  extends AbstractBaseDao{
 
     public void save(Cuenta cuenta) {
         CuentaEntity entity = new CuentaEntity(cuenta);
-        getInMemoryDatabase().put(entity.getId(), entity);
+        // Asegúrate de que la entidad tenga un ID único
+        entity.setId(cuenta.getNumeroCuenta());
+        getInMemoryDatabase().put(cuenta.getNumeroCuenta(), entity);
     }
 
     @Override

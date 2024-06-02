@@ -17,14 +17,16 @@ public class MovimientoEntity extends BaseEntity {
     public MovimientoEntity(Movimiento movimiento) {
         this.tipoOperacion = movimiento.getTipoOperacion();
         this.monto = movimiento.getMonto();
-        this.fecha = movimiento.getFechaHora();
+        this.fecha = movimiento.getFecha();
     }
+
+    
 
     public Movimiento toMovimiento(Cuenta cuenta) {
         Movimiento movimiento = new Movimiento();
         movimiento.setTipoOperacion(this.tipoOperacion);
         movimiento.setMonto(this.monto);
-        movimiento.setFechaHora(this.fecha);
+        movimiento.setFecha(this.fecha);
 
         return movimiento;
     }

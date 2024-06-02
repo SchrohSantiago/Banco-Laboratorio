@@ -2,6 +2,7 @@ C:\Users\santi\Banco-Laboratorio\src\main\java\ar\edu\utn\frbb\tup\model\enums\T
 C:\Users\santi\Banco-Laboratorio\src\main\java\ar\edu\utn\frbb\tup\presentation\subprocess\OperacionesInputProcessor.java
 C:\Users\santi\Banco-Laboratorio\src\main\java\ar\edu\utn\frbb\tup\persistence\entity\BaseEntity.java
 C:\Users\santi\Banco-Laboratorio\src\main\java\ar\edu\utn\frbb\tup\model\enums\TipoCuenta.java
+C:\Users\santi\Banco-Laboratorio\src\main\java\ar\edu\utn\frbb\tup\service\OperacionService.java
 C:\Users\santi\Banco-Laboratorio\src\main\java\ar\edu\utn\frbb\tup\presentation\MenuInputProcessor.java
 C:\Users\santi\Banco-Laboratorio\src\main\java\ar\edu\utn\frbb\tup\Aplicacion.java
 C:\Users\santi\Banco-Laboratorio\src\main\java\ar\edu\utn\frbb\tup\service\ClienteService.java
@@ -13,6 +14,7 @@ C:\Users\santi\Banco-Laboratorio\src\main\java\ar\edu\utn\frbb\tup\service\Movim
 C:\Users\santi\Banco-Laboratorio\src\main\java\ar\edu\utn\frbb\tup\model\exceptions\CuentaAlreadyExistsException.java
 C:\Users\santi\Banco-Laboratorio\src\main\java\ar\edu\utn\frbb\tup\model\Banco.java
 C:\Users\santi\Banco-Laboratorio\src\main\java\ar\edu\utn\frbb\tup\model\operation\Movimiento.java
+C:\Users\santi\Banco-Laboratorio\src\main\java\ar\edu\utn\frbb\tup\model\operation\Operaciones.java
 C:\Users\santi\Banco-Laboratorio\src\main\java\ar\edu\utn\frbb\tup\model\person\Persona.java
 C:\Users\santi\Banco-Laboratorio\src\main\java\ar\edu\utn\frbb\tup\model\enums\TipoOperacion.java
 C:\Users\santi\Banco-Laboratorio\src\main\java\ar\edu\utn\frbb\tup\persistence\ClienteDao.java

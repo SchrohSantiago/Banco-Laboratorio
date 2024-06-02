@@ -3,6 +3,7 @@ package ar.edu.utn.frbb.tup.model.person;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import ar.edu.utn.frbb.tup.model.enums.TipoCuenta;
 import ar.edu.utn.frbb.tup.model.enums.TipoOperacion;
@@ -18,6 +19,18 @@ public class Cuenta {
     private double balance = 0.0; // Cambiamos el tipo de balance a double para manejar montos decimales
     List<Movimiento> movimientos = new ArrayList<>();
     List<Cuenta> numeroCuentas = new ArrayList<>();
+
+    public Cuenta() {}
+    public Cuenta(Cliente cliente, TipoCuenta tipoCuenta, long numeroCuenta, String nombre, double balance, List<Movimiento> movimientos) {
+        this.id = UUID.randomUUID().toString(); // Genera un ID único para cada cuenta
+        this.cliente = getCliente();
+        this.tipoCuenta = getTipoCuenta();
+        this.numeroCuenta = getNumeroCuenta();
+        this.nombre = getNombre();
+        this.fechaCreacion = getFechaCreacion();
+        this.balance = getBalance();
+        this.movimientos = getMovimientos();
+    }
 
     public Cliente getCliente() {
         return cliente;
@@ -83,43 +96,16 @@ public class Cuenta {
         return this;
     }
 
-    public void depositar(double monto) {
-        this.balance += monto; 
-        registrarMovimiento(TipoOperacion.DEPOSITO, monto);
+    public void agregarMovimiento(Movimiento movimiento) {
+        this.movimientos.add(movimiento);
     }
-
-    public void retirar(double monto) {
-        if (this.balance >= monto) {
-            this.balance -= monto;
-            registrarMovimiento(TipoOperacion.RETIRO, monto);
-        } else {
-            System.out.println("Saldo insuficiente para realizar el retiro");
-        }
-    }
-
-    public void transferir(Cuenta cuentaDestino, double monto) {
-        if (this.balance >= monto) {
-            this.balance -= monto;
-            cuentaDestino.depositar(monto);
-            setBalance(balance); 
-            registrarMovimiento(TipoOperacion.TRANSFERENCIA, monto);
-            cuentaDestino.registrarMovimiento(TipoOperacion.TRANSFERENCIA, monto);
-        } else {
-            System.out.println("Saldo insuficiente para realizar la transferencia");
-        }
-    }
-    
-
-    public void registrarMovimiento(TipoOperacion tipoOperacion, double monto) {
-        LocalDateTime fechaHora = LocalDateTime.now();
-        Movimiento movimiento = new Movimiento(fechaHora, tipoOperacion, monto);
-        movimientos.add(movimiento);
-    }
-
-  
 
     public List<Movimiento> getMovimientos() {
         return movimientos;
+    }
+
+    public void setMovimientos(List<Movimiento> movimientos) {
+        this.movimientos = movimientos;
     }
 
     public List<Cuenta> getNumeroCuentas() {

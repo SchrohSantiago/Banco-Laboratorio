@@ -1,30 +1,31 @@
 package ar.edu.utn.frbb.tup.model.operation;
-
 import java.time.LocalDateTime;
 
 import ar.edu.utn.frbb.tup.model.enums.TipoOperacion;
 
-
 public class Movimiento {
-    private LocalDateTime fechaHora;
+    private Long id;
     private TipoOperacion tipoOperacion;
     private double monto;
+    private LocalDateTime fecha;
+    private String cuentaId;
 
     public Movimiento() {}
-    public Movimiento(LocalDateTime fechaHora, TipoOperacion tipoOperacion, double monto) {
-        this.fechaHora = fechaHora;
+    public Movimiento(TipoOperacion tipoOperacion, double monto, String cuentaId) {
         this.tipoOperacion = tipoOperacion;
         this.monto = monto;
+        this.fecha = LocalDateTime.now();
+        this.cuentaId = cuentaId;
     }
 
+    // Getters y setters
 
-
-    public LocalDateTime getFechaHora() {
-        return fechaHora;
+    public Long getId() {
+        return id;
     }
 
-    public void setFechaHora(LocalDateTime fechaHora) {
-        this.fechaHora = fechaHora;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public TipoOperacion getTipoOperacion() {
@@ -43,14 +44,19 @@ public class Movimiento {
         this.monto = monto;
     }
 
-   
+    public LocalDateTime getFecha() {
+        return fecha;
+    }
 
-    @Override
-    public String toString() {
-        return "Movimiento{" +
-                "fechaHora=" + fechaHora +
-                ", tipoOperacion=" + tipoOperacion +
-                ", monto=" + monto +
-                '}';
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getCuentaId() {
+        return cuentaId;
+    }
+
+    public void setCuentaId(String cuentaId) {
+        this.cuentaId = cuentaId;
     }
 }
