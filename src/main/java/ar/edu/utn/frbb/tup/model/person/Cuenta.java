@@ -9,9 +9,10 @@ import ar.edu.utn.frbb.tup.model.enums.TipoOperacion;
 import ar.edu.utn.frbb.tup.model.operation.Movimiento;
 
 public class Cuenta {
+    private String id;
     private Cliente cliente; 
     private TipoCuenta tipoCuenta;
-    private int numeroCuenta;
+    private long numeroCuenta;
     private String nombre;
     private LocalDateTime fechaCreacion;
     private double balance = 0.0; // Cambiamos el tipo de balance a double para manejar montos decimales
@@ -27,11 +28,20 @@ public class Cuenta {
         return this;
     }
 
-    public int getNumeroCuenta() {
+    public String getId() {
+        return id;
+    }
+
+    public Cuenta setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    public long getNumeroCuenta() {
         return numeroCuenta;
     }
 
-    public Cuenta setNumeroCuenta(int numeroCuenta) {
+    public Cuenta setNumeroCuenta(long numeroCuenta) {
         this.numeroCuenta = numeroCuenta;
 
         return this;

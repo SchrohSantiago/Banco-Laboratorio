@@ -3,20 +3,32 @@ package ar.edu.utn.frbb.tup.presentation.subprocess;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
-import ar.edu.utn.frbb.tup.model.Banco;
+
 import ar.edu.utn.frbb.tup.model.person.Cliente;
 import ar.edu.utn.frbb.tup.model.person.Cuenta;
+
+import ar.edu.utn.frbb.tup.service.ClienteService;
+import ar.edu.utn.frbb.tup.service.CuentaService;
 import ar.edu.utn.frbb.tup.model.enums.TipoCuenta;
+
 
 public class CuentaInputProcessor {
 
+    
+    private CuentaService cuentaService = new CuentaService();
+    private ClienteService clienteService = new ClienteService();
+
     private Scanner scanner = new Scanner(System.in);
 
-    public Cuenta crearCuenta(Banco banco) {
-        System.out.println("Por favor introduzca el DNI del cliente al que le crearemos la cuenta:");
-        String dni = scanner.nextLine();
+    public Cuenta crearCuenta() {
 
-        Cliente clienteEncontrado = banco.buscarClientePorDni(dni);
+        System.out.println("Por favor introduzca el DNI del cliente al que le crearemos la cuenta:");
+        Long dni = scanner.nextLong();
+    
+        System.out.println(dni);
+        
+        Cliente clienteEncontrado = clienteService.buscarClientePorDni(dni);
+       
         
         if (clienteEncontrado != null) {
             Cuenta cuenta = new Cuenta();
@@ -56,7 +68,21 @@ public class CuentaInputProcessor {
             }
 
            
-            clienteEncontrado.addCuenta(cuenta);
+         
+
+            try {
+                cuenta.setCliente(clienteEncontrado);
+                clienteService.agregarCuenta(clienteEncontrado.getDni(), cuenta);
+                clienteService.darAltaCliente(clienteEncontrado);
+                cuentaService.darDeAltaCuenta(cuenta);
+                System.out.println("Cuenta creada con éxito");
+            } catch (Exception e) {
+                System.out.println("Error al dar de alta la cuenta: " + e.getMessage());
+                throw new RuntimeException(e);
+            }
+            
+            
+            
             System.out.println("Cuenta creada exitosamente para el cliente con DNI " + dni
                     + ". Numero de cuenta: " + cuenta.getNumeroCuenta()
                     + ", Saldo inicial: " + cuenta.getBalance()

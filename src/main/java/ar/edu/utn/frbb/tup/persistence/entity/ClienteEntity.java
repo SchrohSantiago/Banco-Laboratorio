@@ -10,18 +10,19 @@ import ar.edu.utn.frbb.tup.model.person.Cuenta;
 
 public class ClienteEntity extends BaseEntity {
     private final String tipoPersona;
-    private final String nombre;  // Declaramos a todos los atributos como final para que no puedan ser modificados después de la creación de la entidad 
+    private final String nombre;
     private final String apellido;
     private final LocalDate fechaAlta;
     private final LocalDate fechaNacimiento;
     private final String direccion;
     private final String telefono;
-    private final String banco;
     private final String cbu;
-    private List<Long> cuentas;
+    private final Long dni;
 
-    public ClienteEntity(Cliente cliente) {  // Pasamos por parametros al objeto cliente
-       // Usa el ID del cliente
+    private List<Cuenta> cuentas; // Cambio de List<Long> a List<Cuenta>
+
+    public ClienteEntity(Cliente cliente) {// Convertimos el objeto Cliente a ClienteEntity para poder guardarlo en la base de datos ENTRADA
+        this.dni = cliente.getDni();
         this.tipoPersona = cliente.getTipoPersona() != null ? cliente.getTipoPersona().getDescripcion() : null;
         this.nombre = cliente.getNombre();
         this.apellido = cliente.getApellido();
@@ -29,35 +30,36 @@ public class ClienteEntity extends BaseEntity {
         this.fechaNacimiento = cliente.getFechaNacimiento();
         this.direccion = cliente.getDireccion();
         this.telefono = cliente.getTelefono();
-        this.banco = cliente.getBanco();
         this.cbu = cliente.getCbu();
+        this.cuentas = new ArrayList<>();
         if (cliente.getCuentas() != null && !cliente.getCuentas().isEmpty()) {
-            this.cuentas = new ArrayList<>();
-            for (Cuenta c : cliente.getCuentas()) {
-               
-            }
+            this.cuentas.addAll(cliente.getCuentas()); // Agregar todas las cuentas del cliente
         }
-    }
-
-    public Cliente toCliente() {
-        Cliente cliente = new Cliente();
-        cliente.setNombre(this.nombre);
-        cliente.setApellido(this.apellido);
-        cliente.setTipoPersona(TipoPersona.fromString(this.tipoPersona));
-        cliente.setFechaAlta(this.fechaAlta);
-        cliente.setFechaNacimiento(this.fechaNacimiento);
-        cliente.setDireccion(this.direccion);
-        cliente.setTelefono(this.telefono);
-        cliente.setBanco(this.banco);
-        cliente.setCbu(this.cbu);
-      
-        return cliente;
     }
 
     public void addCuenta(Cuenta cuenta) {
         if (cuentas == null) {
             cuentas = new ArrayList<>();
         }
-      
+        cuentas.add(cuenta); // Agregar la cuenta a la lista de cuentas
+    }
+
+    
+
+    public Cliente toCliente() { // Convertimos el objeto ClienteEntity a Cliente para poder usarlo en el programa SALIDA
+        Cliente cliente = new Cliente();
+        cliente.setDni(this.dni);
+        cliente.setNombre(this.nombre);
+        cliente.setDireccion(this.direccion);
+        cliente.setTelefono(this.telefono);
+        cliente.setCbu(this.cbu);
+        cliente.setCuentas(this.cuentas);
+        cliente.setApellido(this.apellido);
+        cliente.setTipoPersona(TipoPersona.fromString(this.tipoPersona));
+        cliente.setFechaAlta(this.fechaAlta);
+        cliente.setFechaNacimiento(this.fechaNacimiento);
+        cliente.setCuentas(this.cuentas); // Establecer la lista de cuentas del cliente
+
+        return cliente;
     }
 }

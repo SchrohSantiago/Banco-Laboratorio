@@ -20,7 +20,7 @@ public class Banco {
         this.clientes = clientes;
     }
 
-    public Cliente buscarClientePorDni(String dni) {
+    public Cliente buscarClientePorDni(Long dni) {
         for (Cliente cliente : clientes) {
             if (cliente.getDni().equals(dni)) {
                 return cliente; 

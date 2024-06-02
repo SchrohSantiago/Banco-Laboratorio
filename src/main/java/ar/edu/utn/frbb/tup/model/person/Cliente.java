@@ -21,17 +21,22 @@ public class Cliente extends Persona {
         this.id = UUID.randomUUID().toString(); // Genera un ID único para cada cliente
     }
 
-    public Cliente(String nombre, String apellido, String dni, String direccion, String telefono, String banco) {
+    public Cliente(String nombre, String apellido, Long dni, String direccion, String telefono, String banco, LocalDate fechaAlta) {
         super(nombre, apellido, dni);
         this.id = UUID.randomUUID().toString(); // Genera un ID único para cada cliente
         this.direccion = direccion;
         this.telefono = telefono;
         this.banco = banco;
         this.cbu = generarCbu(); // Genera un CBU
+        this.fechaAlta = LocalDate.now(); // Genera la fecha de alta
     }
     
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDireccion() {
@@ -78,16 +83,12 @@ public class Cliente extends Persona {
         return cuentas;
     }
 
-    public void addCuenta(Cuenta cuenta) {
-        this.cuentas.add(cuenta);
-    }
-
-    public void eliminarCuenta(Cuenta cuenta) {
-        this.cuentas.remove(cuenta);
-    }
-
     public void setCuentas(List<Cuenta> cuentas) {
         this.cuentas = cuentas;
+    }
+
+    public void addCuenta(Cuenta cuenta) {
+        this.cuentas.add(cuenta);
     }
 
     public String getCbu() {
@@ -100,5 +101,21 @@ public class Cliente extends Persona {
 
     public String generarCbu() {
         return UUID.randomUUID().toString().replace("-", "").substring(0, 22); // Genera un CBU de 22 caracteres
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "dni=" + getDni() +
+                ", nombre='" + getNombre() + '\'' +
+                ", apellido='" + getApellido() + '\'' +
+                ", tipoPersona=" + tipoPersona +
+                ", banco='" + banco + '\'' +
+                ", fechaAlta=" + fechaAlta +
+                ", cbu='" + cbu + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", cuentas=" + cuentas +
+                '}';
     }
 }

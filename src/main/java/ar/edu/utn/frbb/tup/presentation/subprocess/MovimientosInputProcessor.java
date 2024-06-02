@@ -3,21 +3,22 @@ package ar.edu.utn.frbb.tup.presentation.subprocess;
 import java.util.List;
 import java.util.Scanner;
 
-import ar.edu.utn.frbb.tup.model.Banco;
 import ar.edu.utn.frbb.tup.model.person.Cliente;
 import ar.edu.utn.frbb.tup.model.person.Cuenta;
+import ar.edu.utn.frbb.tup.persistence.ClienteDao;
 import ar.edu.utn.frbb.tup.model.operation.Movimiento;
 
 public class MovimientosInputProcessor {
+    private ClienteDao clienteDao = new ClienteDao();
 
-    public void mostrarMovimientos(Banco banco, Cuenta cuenta){
+    public void mostrarMovimientos(Cuenta cuenta){
        
 
         System.out.println("Ingrese el DNI del cliente:");
         Scanner scanner = new Scanner(System.in);
-        String dniCliente = scanner.nextLine();
+        Long dniCliente = scanner.nextLong();
 
-        Cliente clienteEncontrado2 = banco.buscarClientePorDni(dniCliente);
+        Cliente clienteEncontrado2 = clienteDao.find(dniCliente);
         if (clienteEncontrado2 != null) {
             System.out.println("Ingrese el numero de cuenta:");
             int numeroCuenta = scanner.nextInt();

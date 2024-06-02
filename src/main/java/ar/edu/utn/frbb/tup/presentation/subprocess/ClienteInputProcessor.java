@@ -5,11 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.utn.frbb.tup.model.person.Cliente;
+import ar.edu.utn.frbb.tup.service.ClienteService;
 import ar.edu.utn.frbb.tup.model.enums.TipoPersona;
 
 public class ClienteInputProcessor extends BaseInputProcessor {
 
     private static List<Cliente> clientes = new ArrayList<>();
+    ClienteService clienteService = new ClienteService();
+
+    public ClienteInputProcessor() {}
+    public ClienteInputProcessor(ClienteService clienteService) {
+        this.clienteService = clienteService;
+    }
 
     public Cliente ingresarCliente() {
 
@@ -25,7 +32,7 @@ public class ClienteInputProcessor extends BaseInputProcessor {
         cliente.setApellido(apellido);
 
         System.out.println("Ingrese el dni:");
-        String dni = scanner.nextLine();
+        Long dni = Long.parseLong(scanner.nextLine());
         cliente.setDni(dni);
 
         System.out.println("Ingrese el tipo de persona Fisica(F) o Juridica(J):");
@@ -64,7 +71,7 @@ public class ClienteInputProcessor extends BaseInputProcessor {
         String direccion = scanner.nextLine();
         cliente.setDireccion(direccion);
 
-        clientes.add(cliente);
+        clienteService.darAltaCliente(cliente);
 
         clearScreen();
         return cliente;

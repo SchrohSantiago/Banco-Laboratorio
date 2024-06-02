@@ -10,11 +10,14 @@ public class Movimiento {
     private TipoOperacion tipoOperacion;
     private double monto;
 
+    public Movimiento() {}
     public Movimiento(LocalDateTime fechaHora, TipoOperacion tipoOperacion, double monto) {
         this.fechaHora = fechaHora;
         this.tipoOperacion = tipoOperacion;
         this.monto = monto;
     }
+
+
 
     public LocalDateTime getFechaHora() {
         return fechaHora;
