@@ -1,11 +1,5 @@
 package ar.edu.utn.frbb.tup.presentation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ar.edu.utn.frbb.tup.model.Banco;
-import ar.edu.utn.frbb.tup.model.person.Cliente;
-import ar.edu.utn.frbb.tup.model.person.Cuenta;
 import ar.edu.utn.frbb.tup.presentation.subprocess.*;
 import ar.edu.utn.frbb.tup.service.ClienteService;
 
@@ -13,6 +7,7 @@ public class MenuInputProcessor extends BaseInputProcessor {
     private ClienteInputProcessor clienteInputProcessor = new ClienteInputProcessor();
     private CuentaInputProcessor cuentaInputProcessor = new CuentaInputProcessor();
     private OperacionesInputProcessor operacionesInputProcessor = new OperacionesInputProcessor();
+    private MovimientosInputProcessor movimientosInputProcessor = new MovimientosInputProcessor();
 
     
     private ClienteService clienteService = new ClienteService();
@@ -21,11 +16,7 @@ public class MenuInputProcessor extends BaseInputProcessor {
     private boolean exit = false;
 
     public void renderMenu() {
-        
-        List<Cuenta> cuentas = new ArrayList<>();
-        Cuenta cuenta = null; // Initialize cuenta to null
-
-    
+            
         while (!exit) {
             System.out.println("Bienvenido a la aplicacion de Banco");
             System.out.println("1. Crear un nuevo Cliente");
@@ -55,7 +46,7 @@ public class MenuInputProcessor extends BaseInputProcessor {
                     operacionesInputProcessor.realizarOperacion();
                     break;
                 case 4:
-                   
+                    movimientosInputProcessor.mostrarMovimientos();
                     break;
                 case 5:
                     clienteService.mostrarTodosLosClientes();

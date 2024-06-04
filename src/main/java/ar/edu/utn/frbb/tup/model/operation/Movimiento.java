@@ -59,4 +59,9 @@ public class Movimiento {
     public void setCuentaId(String cuentaId) {
         this.cuentaId = cuentaId;
     }
+
+    @Override
+    public String toString() {
+            return "\n Tipo de Operacion: " + getTipoOperacion() + "\n Monto: " + getMonto() + "\n Fecha: " + getFecha();
+    }
 }

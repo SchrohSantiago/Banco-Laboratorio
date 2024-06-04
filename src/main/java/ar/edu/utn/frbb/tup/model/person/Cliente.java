@@ -103,17 +103,16 @@ public class Cliente extends Persona {
 
     @Override
     public String toString() {
-        return "Cliente{" +
-                "dni=" + getDni() +
-                ", nombre='" + getNombre() + '\'' +
-                ", apellido='" + getApellido() + '\'' +
-                ", tipoPersona=" + tipoPersona +
-                ", banco='" + banco + '\'' +
-                ", fechaAlta=" + fechaAlta +
-                ", cbu='" + cbu + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", direccion='" + direccion + '\'' +
-                ", cuentas=" + cuentas +
-                '}';
+        return "\n ///// Cliente ///// \n" +
+                " dni: " + getDni() +
+                "\n nombre: " + getNombre() + 
+                "\n apellido: " + getApellido() + 
+                "\n tipoPersona: " + getTipoPersona() +
+                "\n banco: " + getBanco() +  
+                "\n fechaAlta: " + getFechaAlta() +
+                "\n cbu=: " + getCbu() + 
+                "\n telefono=: " + getTelefono() + 
+                "\n direccion: " + getDireccion() + 
+                "\n cuentas: " + getCuentas();
     }
 }

@@ -24,8 +24,6 @@ public class CuentaInputProcessor {
 
         System.out.println("Por favor introduzca el DNI del cliente al que le crearemos la cuenta:");
         Long dni = scanner.nextLong();
-    
-        System.out.println(dni);
         
         Cliente clienteEncontrado = clienteService.buscarClientePorDni(dni);
        

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.UUID;
 
 import ar.edu.utn.frbb.tup.model.enums.TipoCuenta;
-import ar.edu.utn.frbb.tup.model.enums.TipoOperacion;
 import ar.edu.utn.frbb.tup.model.operation.Movimiento;
 
 public class Cuenta {
@@ -130,14 +129,6 @@ public class Cuenta {
         }
     }
 
-    public Cuenta buscarCuentaPorNumero(int numeroCuenta, List<Cuenta> cuentas) {
-        for (Cuenta cuenta : cuentas) {
-            if (cuenta.getNumeroCuenta() == numeroCuenta) {
-                return cuenta;
-            }
-        }
-        return null;
-    }
 
     @Override
     public String toString() {
