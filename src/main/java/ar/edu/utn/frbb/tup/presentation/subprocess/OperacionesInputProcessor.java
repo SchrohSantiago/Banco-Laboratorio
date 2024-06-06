@@ -1,6 +1,5 @@
 package ar.edu.utn.frbb.tup.presentation.subprocess;
 
-import java.util.List;
 import java.util.Scanner;
 
 import ar.edu.utn.frbb.tup.model.person.Cliente;

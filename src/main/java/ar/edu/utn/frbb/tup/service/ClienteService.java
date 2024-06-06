@@ -20,10 +20,12 @@ public class ClienteService {
         if (clienteDao.find(cliente.getDni())!= null) {
             throw new RuntimeException("El cliente ya existe");
         }
+
+        
         System.out.println("Cliente dado de alta");
         clienteDao.save(cliente);
         
-    }
+    }   
 
     public void agregarCuenta(long dni, Cuenta cuenta) {
         Cliente cliente = clienteDao.find(dni);
@@ -40,16 +42,5 @@ public class ClienteService {
             throw new RuntimeException("El cliente no existe");
         }
         return clienteDao.find(dni);
-    }
-
-    public void mostrarTodosLosClientes() {
-        List<Cliente> clientes = clienteDao.getAll();
-        if (clientes.isEmpty()) {
-            System.out.println("No hay clientes registrados.");
-        } else {
-            for (Cliente cliente : clientes) {
-                System.out.println(cliente);
-            }
-        }
     }
 }
