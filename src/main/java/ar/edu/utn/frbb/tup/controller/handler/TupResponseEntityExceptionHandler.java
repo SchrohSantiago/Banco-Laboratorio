@@ -1,6 +1,8 @@
 package ar.edu.utn.frbb.tup.controller.handler;
 
-import ar.edu.utn.frbb.tup.exceptions.TipoCuentaAlreadyExistsException;
+import ar.edu.utn.frbb.tup.exceptions.ClienteNotFoundException;
+import ar.edu.utn.frbb.tup.exceptions.CuentaAlreadyExistsException;
+import ar.edu.utn.frbb.tup.exceptions.EdadInvalidaException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -11,18 +13,28 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-@ControllerAdvice // La anotación @ControllerAdvice en Spring es una característica poderosa que permite manejar excepciones, validar modelos y proporcionar lógica global a todos los controladores de una aplicación
+@ControllerAdvice
 public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {TipoCuentaAlreadyExistsException.class, IllegalArgumentException.class}) // capturar excepciones lanzadas por los controladores y procesarlas de manera personalizada. Esto permite separar la lógica de manejo de excepciones del flujo principal de la aplicación, facilitando la lectura y el mantenimiento del código.
-    protected ResponseEntity<Object> handleMateriaNotFound(Exception ex, WebRequest request) {  // Recibe la Exception y  el contexto de la solicitud web en el que ocurrio la excepcion
-
-        String exceptionMessage = ex.getMessage(); // guarda el mensaje de error de la Exception
+    @ExceptionHandler(value = {CuentaAlreadyExistsException.class, IllegalArgumentException.class, EdadInvalidaException.class})
+    protected ResponseEntity<Object> handleNotFound(
+            Exception ex, WebRequest request) {
+        String exceptionMessage = ex.getMessage();
         CustomApiError error = new CustomApiError();
-        error.setErrorCode(302);
-        error.setErrorMessage(exceptionMessage); // seteamos el mensaje de error lanzado por la excepcion
+        error.setErrorCode(409);
+        error.setErrorMessage(exceptionMessage);
+        return handleExceptionInternal(ex, error,
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
 
-        return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.BAD_REQUEST, request); // Se llama al método handleExceptionInternal para crear y devolver una respuesta HTTP personalizada.
+    @ExceptionHandler(value = {ClienteNotFoundException.class})
+    protected ResponseEntity<Object> handleClienteNotFoundException(
+            Exception ex, WebRequest request) {
+        CustomApiError error = new CustomApiError();
+        error.setErrorCode(404);
+        error.setErrorMessage("Cliente inexistente: "+ ex.getMessage());
+        return handleExceptionInternal(ex, error,
+                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
     @ExceptionHandler(value = { IllegalStateException.class })
@@ -30,13 +42,15 @@ public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHa
             RuntimeException ex, WebRequest request) {
         String exceptionMessage = ex.getMessage();
         CustomApiError error = new CustomApiError();
-        error.setErrorCode(404);
+        error.setErrorCode(409);
         error.setErrorMessage(exceptionMessage);
-        return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+        return handleExceptionInternal(ex, error,
+                new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 
 
-    @Override  // crea y devuelve una respuesta HTTP personalizada
+
+    @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         if (body == null) {
             CustomApiError error = new CustomApiError();
@@ -44,7 +58,7 @@ public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHa
             body = error;
         }
 
-        return new ResponseEntity<>(body, headers, status);
+        return new ResponseEntity(body, headers, status);
     }
 
 }

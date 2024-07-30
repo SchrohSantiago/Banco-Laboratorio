@@ -1,6 +1,7 @@
 package ar.edu.utn.frbb.tup.model;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -19,11 +20,11 @@ public class Cliente extends Persona {
 
     public Cliente(){};
     public Cliente(ClienteDto clienteDto){
-        super(clienteDto.getApellido(), clienteDto.getDireccion(), clienteDto.getDni(), clienteDto.getFechaNacimiento(), clienteDto.getNombre(),   clienteDto.getTelefono());
-        this.fechaAlta = LocalDate.now();
-        this.banco = clienteDto.getBanco();
-        this.cbu = generarCbu();
-        this.tipoPersona = clienteDto.getTipoPersona();
+        super(clienteDto.getDni(), clienteDto.getApellido(), clienteDto.getNombre(), clienteDto.getFechaNacimiento());
+        fechaAlta = LocalDate.now();
+        tipoPersona = TipoPersona.fromString(clienteDto.getTipoPersona());
+        banco = clienteDto.getBanco();
+        cbu = generarCbu();
     }
 
     public TipoPersona getTipoPersona() {
@@ -74,6 +75,8 @@ public class Cliente extends Persona {
         return UUID.randomUUID().toString().replace("-", "").substring(0, 22); // Genera un CBU de 22 caracteres
     }
 
+
+
     @Override
     public String toString() {
         return "\n ///// Cliente ///// \n" +
@@ -83,9 +86,7 @@ public class Cliente extends Persona {
                 "\n tipoPersona: " + getTipoPersona() +
                 "\n banco: " + getBanco() +  
                 "\n fechaAlta: " + getFechaAlta() +
-                "\n cbu=: " + getCbu() + 
-                "\n telefono=: " + getTelefono() + 
-                "\n direccion: " + getDireccion() + 
+                "\n cbu=: " + getCbu() +
                 "\n cuentas: " + getCuentas();
     }
 }

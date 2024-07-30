@@ -7,20 +7,17 @@ import java.time.LocalDate;
 public abstract class Persona {
     protected String nombre;
     protected String apellido;
-    protected Long dni;
+    protected long dni;
     protected LocalDate fechaNacimiento;
-    protected String direccion;
-    protected String telefono;
+
 
     public Persona(){};
 
-    public Persona(String apellido, String direccion, Long dni, String fechaNacimiento, String nombre, String telefono) {
+    public Persona(long dni, String apellido, String nombre, String fechaNacimiento) {
         this.apellido = apellido;
-        this.direccion = direccion;
         this.dni = dni;
         this.fechaNacimiento = LocalDate.parse(fechaNacimiento);
         this.nombre = nombre;
-        this.telefono = telefono;
     }
 
 
@@ -41,11 +38,11 @@ public abstract class Persona {
         this.apellido = apellido;
     }
 
-    public Long getDni() {
+    public long getDni() {
         return dni;
     }
 
-    public void setDni(Long dni) {
+    public void setDni(long dni) {
         this.dni = dni;
     }
 
@@ -57,20 +54,5 @@ public abstract class Persona {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
 }
 

@@ -29,6 +29,12 @@ public class ClienteDao extends AbstractBaseDao{
         getInMemoryDatabase().put(cliente.getDni(), entity);
     }
 
+    public void delete(Cliente cliente) {
+        find(cliente.getDni());
+        getInMemoryDatabase().remove(cliente.getDni());
+    }
+
+
     public List<Cliente> getAll() {
         Map<Long, Object> database = getInMemoryDatabase();
         List<Cliente> clientes = new ArrayList<>();

@@ -13,8 +13,6 @@ public class ClienteEntity extends BaseEntity {
     private final String apellido;
     private final LocalDate fechaAlta;
     private final LocalDate fechaNacimiento;
-    private final String direccion;
-    private final String telefono;
     private final String cbu;
     private final Long dni;
     private final String banco;
@@ -28,9 +26,7 @@ public class ClienteEntity extends BaseEntity {
         this.nombre = cliente.getNombre();
         this.apellido = cliente.getApellido();
         this.fechaAlta = cliente.getFechaAlta();
-        this.direccion = cliente.getDireccion();
         this.fechaNacimiento = cliente.getFechaNacimiento();
-        this.telefono = cliente.getTelefono();
         this.banco = cliente.getBanco();
         this.cbu = cliente.getCbu();
         this.cuentas = new ArrayList<>();
@@ -50,8 +46,6 @@ public class ClienteEntity extends BaseEntity {
         Cliente cliente = new Cliente();
         cliente.setDni(this.dni);
         cliente.setNombre(this.nombre);
-        cliente.setDireccion(this.direccion);
-        cliente.setTelefono(this.telefono);
         cliente.setCbu(this.cbu);
         cliente.setApellido(this.apellido);
         cliente.setTipoPersona(TipoPersona.fromString(this.tipoPersona));
