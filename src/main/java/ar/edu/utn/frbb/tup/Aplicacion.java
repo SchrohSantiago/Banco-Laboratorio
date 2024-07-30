@@ -1,11 +1,36 @@
 package ar.edu.utn.frbb.tup;
 
-import ar.edu.utn.frbb.tup.presentation.MenuInputProcessor;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-
+@SpringBootApplication
 public class Aplicacion {
     public static void main(String args[]) {
-        MenuInputProcessor menuInputProcessor = new MenuInputProcessor();
-        menuInputProcessor.renderMenu();
+        SpringApplication.run(Aplicacion.class, args);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

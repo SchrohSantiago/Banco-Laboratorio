@@ -1,30 +1,33 @@
 package ar.edu.utn.frbb.tup.service;
 
-import java.util.List;
-
-import ar.edu.utn.frbb.tup.model.person.Cliente;
-import ar.edu.utn.frbb.tup.model.person.Cuenta;
+import ar.edu.utn.frbb.tup.controller.dto.ClienteDto;
+import ar.edu.utn.frbb.tup.model.Cliente;
+import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.persistence.ClienteDao;
 import ar.edu.utn.frbb.tup.persistence.CuentaDao;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class ClienteService {
-    ClienteDao clienteDao = new ClienteDao();
     CuentaDao cuentaDao = new CuentaDao();
 
-    public ClienteService() {
-        clienteDao = new ClienteDao();
+    ClienteDao clienteDao;
+
+    public ClienteService(ClienteDao clienteDao) {
+        this.clienteDao = clienteDao;
     }
 
-    public void darAltaCliente(Cliente cliente) {
+    public Cliente darAltaCliente(ClienteDto clienteDto) {
+        Cliente cliente = new Cliente(clienteDto);
+
         if (clienteDao.find(cliente.getDni())!= null) {
             throw new RuntimeException("El cliente ya existe");
         }
 
-        
-        System.out.println("Cliente dado de alta");
+
         clienteDao.save(cliente);
-        
+
+        return cliente;
     }   
 
     public void agregarCuenta(long dni, Cuenta cuenta) {
@@ -32,7 +35,7 @@ public class ClienteService {
         if (cliente == null) {
             throw new RuntimeException("El cliente no existe");
         }
-        cuenta.setCliente(cliente);
+        cuenta.setTitular(cliente);
         cuentaDao.save(cuenta);
         System.out.println("Cuenta agregada");
     }

@@ -1,56 +1,29 @@
-package ar.edu.utn.frbb.tup.model.person;
+package ar.edu.utn.frbb.tup.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import ar.edu.utn.frbb.tup.controller.dto.ClienteDto;
 import ar.edu.utn.frbb.tup.model.enums.TipoPersona;
 
 public class Cliente extends Persona {
-    private String id;
-    private String direccion;
-    private String telefono;
+
     private TipoPersona tipoPersona;
     private String banco;
     private LocalDate fechaAlta;
-    private List<Cuenta> cuentas = new ArrayList<>();
+    private List<Cuenta> cuentas;
     private String cbu;
 
-    public Cliente() {}
-    public Cliente(String nombre, String apellido, Long dni, String direccion, String telefono, String banco, LocalDate fechaAlta) {
-        super(nombre, apellido, dni);
-        this.id = UUID.randomUUID().toString(); // Genera un ID único para cada cliente
-        this.direccion = getDireccion();
-        this.telefono = getTelefono();
-        this.banco = getBanco();
-        this.cbu = generarCbu(); // Genera un CBU
-        this.fechaAlta = getFechaAlta(); // Genera la fecha de alta
-        this.cuentas = getCuentas();
-    }
-    
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public Cliente(){};
+    public Cliente(ClienteDto clienteDto){
+        super(clienteDto.getApellido(), clienteDto.getDireccion(), clienteDto.getDni(), clienteDto.getFechaNacimiento(), clienteDto.getNombre(),   clienteDto.getTelefono());
+        this.fechaAlta = LocalDate.now();
+        this.banco = clienteDto.getBanco();
+        this.cbu = generarCbu();
+        this.tipoPersona = clienteDto.getTipoPersona();
     }
 
     public TipoPersona getTipoPersona() {

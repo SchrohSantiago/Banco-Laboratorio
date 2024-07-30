@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import ar.edu.utn.frbb.tup.model.person.Cliente;
+import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.persistence.entity.ClienteEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class ClienteDao extends AbstractBaseDao{
+
+    @Autowired
+    CuentaDao cuentaDao;
 
     public Cliente find(long dni) {
         if (getInMemoryDatabase().get(dni) == null) {

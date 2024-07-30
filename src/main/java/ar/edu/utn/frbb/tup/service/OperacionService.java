@@ -1,19 +1,19 @@
 package ar.edu.utn.frbb.tup.service;
 
 import ar.edu.utn.frbb.tup.model.enums.TipoOperacion;
-import ar.edu.utn.frbb.tup.model.operation.Movimiento;
-import ar.edu.utn.frbb.tup.model.person.Cuenta;
+import ar.edu.utn.frbb.tup.model.Movimiento;
+import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.persistence.CuentaDao;
 
 public class OperacionService {
-    private CuentaDao cuentaDao = new CuentaDao();
+    private CuentaDao cuentaDao;
 
     public void depositar(Long numeroCuenta, double monto) {
         Cuenta cuenta = cuentaDao.find(numeroCuenta);
         if (cuenta != null) {
             cuenta.setBalance(cuenta.getBalance() + monto);
-            Movimiento movimiento = new Movimiento(TipoOperacion.DEPOSITO, monto, cuenta.getId());
-            cuenta.agregarMovimiento(movimiento);
+            Movimiento movimiento = new Movimiento(monto, TipoOperacion.RETIRO, cuenta);
+            cuenta.addMovimiento(movimiento);
             cuentaDao.save(cuenta);
             System.out.println("Nuevo Balance: " + cuenta.getBalance());
         } else {
@@ -26,8 +26,8 @@ public class OperacionService {
         if (cuenta != null) {
             if (cuenta.getBalance() >= monto) {
                 cuenta.setBalance(cuenta.getBalance() - monto);
-                Movimiento movimiento = new Movimiento(TipoOperacion.RETIRO, monto, cuenta.getId());
-                cuenta.agregarMovimiento(movimiento);
+                Movimiento movimiento = new Movimiento(monto, TipoOperacion.RETIRO, cuenta);
+                cuenta.addMovimiento(movimiento);
                 cuentaDao.save(cuenta);
                 System.out.println("Nuevo Balance: " + cuenta.getBalance());
             } else {
@@ -47,11 +47,11 @@ public class OperacionService {
                 cuentaOrigen.setBalance(cuentaOrigen.getBalance() - monto);
                 cuentaDestino.setBalance(cuentaDestino.getBalance() + monto);
 
-                Movimiento movimientoOrigen = new Movimiento(TipoOperacion.TRANSFERENCIA, monto, cuentaOrigen.getId());
-                Movimiento movimientoDestino = new Movimiento(TipoOperacion.TRANSFERENCIA, monto, cuentaDestino.getId());
+                Movimiento movimientoOrigen = new Movimiento(monto, TipoOperacion.TRANSFERENCIA,  cuentaOrigen);
+                Movimiento movimientoDestino = new Movimiento(monto,TipoOperacion.TRANSFERENCIA,  cuentaDestino);
 
-                cuentaOrigen.agregarMovimiento(movimientoOrigen);
-                cuentaDestino.agregarMovimiento(movimientoDestino);
+                cuentaOrigen.addMovimiento(movimientoOrigen);
+                cuentaDestino.addMovimiento(movimientoDestino);
 
                 cuentaDao.save(cuentaOrigen);
                 cuentaDao.save(cuentaDestino);

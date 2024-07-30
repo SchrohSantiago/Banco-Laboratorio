@@ -4,14 +4,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import ar.edu.utn.frbb.tup.model.enums.TipoPersona;
-import ar.edu.utn.frbb.tup.model.person.Cliente;
-import ar.edu.utn.frbb.tup.model.person.Cuenta;
+import ar.edu.utn.frbb.tup.model.Cliente;
+import ar.edu.utn.frbb.tup.model.Cuenta;
 
 public class ClienteEntity extends BaseEntity {
     private final String tipoPersona;
     private final String nombre;
     private final String apellido;
     private final LocalDate fechaAlta;
+    private final LocalDate fechaNacimiento;
     private final String direccion;
     private final String telefono;
     private final String cbu;
@@ -28,6 +29,7 @@ public class ClienteEntity extends BaseEntity {
         this.apellido = cliente.getApellido();
         this.fechaAlta = cliente.getFechaAlta();
         this.direccion = cliente.getDireccion();
+        this.fechaNacimiento = cliente.getFechaNacimiento();
         this.telefono = cliente.getTelefono();
         this.banco = cliente.getBanco();
         this.cbu = cliente.getCbu();
@@ -56,6 +58,7 @@ public class ClienteEntity extends BaseEntity {
         cliente.setFechaAlta(this.fechaAlta);
         cliente.setCuentas(this.cuentas);
         cliente.setBanco(this.banco);
+        cliente.setFechaNacimiento(this.fechaNacimiento);
 
         return cliente;
     }

@@ -1,10 +1,10 @@
 package ar.edu.utn.frbb.tup.persistence.entity;
 
-import ar.edu.utn.frbb.tup.model.person.Cliente;
-import ar.edu.utn.frbb.tup.model.person.Cuenta;
+import ar.edu.utn.frbb.tup.model.Cliente;
+import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.model.enums.TipoCuenta;
 import ar.edu.utn.frbb.tup.persistence.ClienteDao;
-import ar.edu.utn.frbb.tup.model.operation.Movimiento;
+import ar.edu.utn.frbb.tup.model.Movimiento;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,9 +24,8 @@ public class CuentaEntity extends BaseEntity{
         this.numeroCuenta = cuenta.getNumeroCuenta();
         this.balance = cuenta.getBalance();
         this.tipoCuenta = cuenta.getTipoCuenta().toString();
-        this.titular = cuenta.getCliente().getDni();
+        this.titular = cuenta.getTitular().getDni();
         this.fechaCreacion = cuenta.getFechaCreacion();
-        this.nombre = cuenta.getNombre();
         this.movimientos = cuenta.getMovimientos();
     }
 
@@ -38,8 +37,7 @@ public class CuentaEntity extends BaseEntity{
         cuenta.setTipoCuenta(TipoCuenta.valueOf(this.tipoCuenta));
         cuenta.setFechaCreacion(this.fechaCreacion);
         Cliente cliente = new ClienteDao().find(this.titular);
-        cuenta.setCliente(cliente);
-        cuenta.setNombre(this.nombre);
+        cuenta.setTitular(cliente);
         cuenta.setMovimientos(this.movimientos);
         
         return cuenta;
