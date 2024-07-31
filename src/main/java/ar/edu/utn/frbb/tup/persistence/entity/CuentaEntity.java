@@ -3,6 +3,7 @@ package ar.edu.utn.frbb.tup.persistence.entity;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.model.enums.TipoCuenta;
+import ar.edu.utn.frbb.tup.model.enums.TipoMoneda;
 import ar.edu.utn.frbb.tup.persistence.ClienteDao;
 import ar.edu.utn.frbb.tup.model.Movimiento;
 
@@ -15,8 +16,9 @@ public class CuentaEntity extends BaseEntity{
     LocalDateTime fechaCreacion;
     double balance;
     String tipoCuenta;
-    Long titular;
+    long dniTitular;
     long numeroCuenta;
+    String tipoMoneda;
 
     List<Movimiento> movimientos = new ArrayList<>();
     
@@ -24,9 +26,10 @@ public class CuentaEntity extends BaseEntity{
         this.numeroCuenta = cuenta.getNumeroCuenta();
         this.balance = cuenta.getBalance();
         this.tipoCuenta = cuenta.getTipoCuenta().toString();
-        this.titular = cuenta.getTitular().getDni();
+        this.dniTitular = cuenta.getDniTitular();
         this.fechaCreacion = cuenta.getFechaCreacion();
         this.movimientos = cuenta.getMovimientos();
+        this.tipoMoneda = cuenta.getTipoMoneda().toString();
     }
 
     public Cuenta toCuenta() {
@@ -36,9 +39,10 @@ public class CuentaEntity extends BaseEntity{
         cuenta.setNumeroCuenta(this.numeroCuenta);
         cuenta.setTipoCuenta(TipoCuenta.valueOf(this.tipoCuenta));
         cuenta.setFechaCreacion(this.fechaCreacion);
-        Cliente cliente = new ClienteDao().find(this.titular);
-        cuenta.setTitular(cliente);
+        Cliente cliente = new ClienteDao().find(this.dniTitular);
+        cuenta.setDniTitular(cliente.getDni());
         cuenta.setMovimientos(this.movimientos);
+        cuenta.setTipoMoneda(TipoMoneda.valueOf(this.tipoMoneda));
         
         return cuenta;
     }

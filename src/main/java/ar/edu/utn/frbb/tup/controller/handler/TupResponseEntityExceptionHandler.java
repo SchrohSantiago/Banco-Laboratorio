@@ -3,6 +3,7 @@ package ar.edu.utn.frbb.tup.controller.handler;
 import ar.edu.utn.frbb.tup.exceptions.ClienteNotFoundException;
 import ar.edu.utn.frbb.tup.exceptions.CuentaAlreadyExistsException;
 import ar.edu.utn.frbb.tup.exceptions.EdadInvalidaException;
+import ar.edu.utn.frbb.tup.exceptions.MaximoCuentasException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -37,7 +38,18 @@ public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHa
                 new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
-    @ExceptionHandler(value = { IllegalStateException.class })
+    @ExceptionHandler(value = {MaximoCuentasException.class})
+    protected ResponseEntity<Object> handleMaximoCuentasException(
+            RuntimeException ex, WebRequest request) {
+        String exceptionMessage = ex.getMessage();
+        CustomApiError error = new CustomApiError();
+        error.setErrorCode(403);  // El error HTTP 403 "forbidden" es utilizado normalmente para indicar que la operacion esta pohibida por la logica de negocio, en este caso la logica de negocio creada indica que no se pueden mas de n cantidad de cuentas por cliente
+        error.setErrorMessage(exceptionMessage);
+        return handleExceptionInternal(ex, error,
+                new HttpHeaders(), HttpStatus.FORBIDDEN, request);
+    }
+
+    @ExceptionHandler(value = { IllegalStateException.class})
     protected ResponseEntity<Object> handleConflict(
             RuntimeException ex, WebRequest request) {
         String exceptionMessage = ex.getMessage();

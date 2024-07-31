@@ -1,6 +1,4 @@
 package ar.edu.utn.frbb.tup.controller;
-
-
 import ar.edu.utn.frbb.tup.controller.dto.ClienteDto;
 import ar.edu.utn.frbb.tup.controller.validator.ClienteValidator;
 import ar.edu.utn.frbb.tup.exceptions.ClienteNotFoundException;
@@ -10,8 +8,6 @@ import ar.edu.utn.frbb.tup.exceptions.ClienteAlreadyExistsException;
 import ar.edu.utn.frbb.tup.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.function.Supplier;
 
 @RestController
 @RequestMapping("/cliente")
@@ -42,6 +38,8 @@ public class ClienteController {
     }
 
     @PutMapping("/{dni}")
-    public Cliente editarClientePorDni(@PathVariable long dni) throws  ClienteNotFoundException {}
-
+    public Cliente editarClientePorDni(@PathVariable long dni, @RequestBody ClienteDto clienteDto) throws ClienteNotFoundException { // Se envian los dos parametros el DNI para identificar el usuario a modificar y el JSON con las atributos que se desean modificar y sus respectivos valores
+        clienteValidator.editValidate(clienteDto);
+        return clienteService.editarClientPorDni(dni, clienteDto);
+    }
 }

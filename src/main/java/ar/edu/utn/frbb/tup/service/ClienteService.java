@@ -8,6 +8,7 @@ import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.persistence.ClienteDao;
 import ar.edu.utn.frbb.tup.persistence.CuentaDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,9 +16,11 @@ import java.time.Period;
 
 @Service
 public class ClienteService {
-    CuentaDao cuentaDao = new CuentaDao();
+    @Autowired
+    private CuentaDao cuentaDao;
 
-    ClienteDao clienteDao;
+    @Autowired
+    private ClienteDao clienteDao;
 
     public ClienteService(ClienteDao clienteDao) {
         this.clienteDao = clienteDao;
@@ -44,18 +47,10 @@ public class ClienteService {
         }
 
         clienteDao.save(cliente);
+
         return cliente;
     }   
 
-    public void agregarCuenta(long dni, Cuenta cuenta) {
-        Cliente cliente = clienteDao.find(dni);
-        if (cliente == null) {
-            throw new RuntimeException("El cliente no existe");
-        }
-        cuenta.setTitular(cliente);
-        cuentaDao.save(cuenta);
-        System.out.println("Cuenta agregada");
-    }
 
     public Cliente buscarClientePorDni(long dni) throws ClienteNotFoundException {
         if (clienteDao.find(dni) == null) {
@@ -65,12 +60,39 @@ public class ClienteService {
     }
 
     public Cliente eliminarClientPorDni(long dni) throws ClienteNotFoundException {
-        Cliente cliente = clienteDao.find(dni);
         try{
+            Cliente cliente = clienteDao.find(dni);
             clienteDao.delete(cliente);
+            return cliente;
         } catch (RuntimeException e){
             throw new ClienteNotFoundException("El cliente buscado no existe");
         }
-        return cliente;
+    }
+
+    public Cliente editarClientPorDni(long dni, ClienteDto clienteDto) throws ClienteNotFoundException {
+       try {
+           Cliente cliente = clienteDao.find(dni);
+
+           if (cliente == null) {
+               throw new ClienteNotFoundException("El cliente buscado no existe");
+           }
+
+           if (!clienteDto.getDireccion().isEmpty()) {
+               cliente.setDireccion(clienteDto.getDireccion());
+           }
+
+           if (!clienteDto.getBanco().isEmpty()) {
+               cliente.setBanco(clienteDto.getBanco());
+           }
+
+           if (!clienteDto.getTelefono().isEmpty()) {
+               cliente.setTelefono(clienteDto.getTelefono());
+           }
+
+           return cliente;
+
+       } catch (RuntimeException e) {
+           throw new ClienteNotFoundException("El cliente buscado no existe");
+       }
     }
 }

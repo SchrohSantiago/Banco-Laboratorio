@@ -6,9 +6,11 @@ import java.util.List;
 
 import ar.edu.utn.frbb.tup.controller.dto.CuentaDetalladaDto;
 import ar.edu.utn.frbb.tup.model.enums.TipoCuenta;
+import ar.edu.utn.frbb.tup.model.enums.TipoMoneda;
 
 public class Cuenta {
-    private Cliente titular;
+    private TipoMoneda tipoMoneda;
+    private long dniTitular;
     private TipoCuenta tipoCuenta;
     private long numeroCuenta;
     private LocalDateTime fechaCreacion;
@@ -17,60 +19,61 @@ public class Cuenta {
 
     public Cuenta(){};
     public Cuenta(CuentaDetalladaDto cuentaDto) {
+        this.tipoMoneda = TipoMoneda.fromString(cuentaDto.getTipoMoneda());
         this.balance = 0d;
-        this.titular = cuentaDto.getTitular();
+        this.dniTitular = cuentaDto.getDniTitular();
         this.fechaCreacion = LocalDateTime.now();
-        this.movimientos = new ArrayList<>();
-        this.numeroCuenta = generarNumeroCuenta();
-        this.tipoCuenta = cuentaDto.getTipoCuenta();
+        this.movimientos = new ArrayList<>();   // Cuando se crea un objeto de cuenta se genera un ArrayList vacio para los movimientos
+        this.numeroCuenta = generarNumeroCuenta(); // Se genera un numero de cuenta automatico con la creacion del objeto
+        this.tipoCuenta = TipoCuenta.fromString(cuentaDto.getTipoCuenta());
     }
 
-    public Cliente getTitular() {
-        return titular;
+    public TipoMoneda getTipoMoneda() {
+        return tipoMoneda;
     }
 
-    public Cuenta setTitular(Cliente titular) {
-        this.titular = titular;
-        return this;
+    public void setTipoMoneda(TipoMoneda tipoMoneda) {
+        this.tipoMoneda = tipoMoneda;
+    }
+
+    public long getDniTitular() {
+        return dniTitular;
+    }
+
+    public void setDniTitular(long dniTitular) {
+        this.dniTitular = dniTitular;
+    }
+
+    public void setNumeroCuenta(long numeroCuenta) {
+        this.numeroCuenta = numeroCuenta;
+    }
+
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
+
+    public void setTipoCuenta(TipoCuenta tipoCuenta) {
+        this.tipoCuenta = tipoCuenta;
     }
 
     public long getNumeroCuenta() {
         return numeroCuenta;
     }
 
-    public Cuenta setNumeroCuenta(long numeroCuenta) {
-        this.numeroCuenta = numeroCuenta;
-
-        return this;
-    }
-
     public TipoCuenta getTipoCuenta() {
         return tipoCuenta;
     }
-
-    public Cuenta setTipoCuenta(TipoCuenta tipoCuenta) {
-        this.tipoCuenta = tipoCuenta;
-        return this;
-    }
-
-
 
     public LocalDateTime getFechaCreacion() {
         return fechaCreacion;
     }
 
-    public Cuenta setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-        return this;
-    }
-
     public Double getBalance() {
         return balance;
-    }
-
-    public Cuenta setBalance(Double balance) {
-        this.balance = balance;
-        return this;
     }
 
     public void addMovimiento(Movimiento movimiento) {
@@ -87,16 +90,14 @@ public class Cuenta {
 
     public long generarNumeroCuenta() {
         // Creamos un numero de cuenta random
-        int numeroCuenta = (int) (Math.random() * 1000000);
-    
-        return numeroCuenta;
+        return (int) (Math.random() * 1000000);
     }
 
 
     @Override
     public String toString() {
         return "Cuenta{" +
-                "cliente=" + titular +
+                "cliente=" + dniTitular +
                 ", tipoCuenta='" + tipoCuenta + '\'' +
                 ", fechaCreacion=" + fechaCreacion +
                 ", balance=" + balance +

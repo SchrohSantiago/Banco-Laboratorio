@@ -1,11 +1,9 @@
 package ar.edu.utn.frbb.tup.controller.validator;
 
 import ar.edu.utn.frbb.tup.controller.dto.ClienteDto;
-import ar.edu.utn.frbb.tup.model.enums.TipoPersona;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Component
 public class ClienteValidator {
@@ -16,21 +14,14 @@ public class ClienteValidator {
         }
 
         // Validamos los campos individualmente para ser mas especificos
-        if (Objects.isNull(clienteDto.getNombre()) || clienteDto.getNombre().trim().isEmpty()) {
-            throw new IllegalArgumentException("El nombre no puede ser null o estar vacio");
-        }
-
-        if (Objects.isNull(clienteDto.getApellido()) || clienteDto.getApellido().trim().isEmpty()) {
-            throw new IllegalArgumentException("El apellido no puede ser null o estar vacio");
-        }
-
-        if (Objects.isNull(clienteDto.getFechaNacimiento()) || clienteDto.getFechaNacimiento().trim().isEmpty()) {
-            throw new IllegalArgumentException("La fecha de nacimiento no puede ser null o estar vacia");
-        }
-
-        if (Objects.isNull(clienteDto.getBanco()) || clienteDto.getBanco().trim().isEmpty()) {
-            throw new IllegalArgumentException("El banco no puede ser null o estar vacio");
-        }
+        Validator.validateNotNullOrEmpty(clienteDto.getNombre(),"nombre");
+        Validator.validateNotNullOrEmpty(clienteDto.getApellido(),"apellido");
+        Validator.validateNotNullOrEmpty(clienteDto.getBanco(),"banco");
+        Validator.validateNotNullOrEmpty(clienteDto.getTipoPersona(),"tipo persona");
+        Validator.validateNotNullOrEmpty(clienteDto.getDni(),"dni");
+        Validator.validateNotNullOrEmpty(clienteDto.getDireccion(),"direccion");
+        Validator.validateNotNullOrEmpty(clienteDto.getTelefono(),"telefono");
+        Validator.validateNotNullOrEmpty(clienteDto.getFechaNacimiento(),"fecha nacimiento");
 
         try {
             LocalDate.parse(clienteDto.getFechaNacimiento());
@@ -38,4 +29,21 @@ public class ClienteValidator {
             throw new IllegalArgumentException("Error en el formato de fecha");
         }
     }
+
+    public void editValidate(ClienteDto clienteDto){
+        if(clienteDto == null){
+            throw new IllegalArgumentException("El cliente es null");
+        }
+        
+        boolean camposInvalidos = clienteDto.getNombre() != null ||
+                clienteDto.getApellido() != null ||
+                clienteDto.getFechaNacimiento() != null ||
+                clienteDto.getTipoPersona() != null;
+
+        if(camposInvalidos) {
+            throw new IllegalArgumentException("Los unicos campos que se pueden modificar son: DIRECCION, TELEFONO y BANCO");
+        }
+    }
+
+
 }
