@@ -1,9 +1,6 @@
 package ar.edu.utn.frbb.tup.controller.handler;
 
-import ar.edu.utn.frbb.tup.exceptions.ClienteNotFoundException;
-import ar.edu.utn.frbb.tup.exceptions.CuentaAlreadyExistsException;
-import ar.edu.utn.frbb.tup.exceptions.EdadInvalidaException;
-import ar.edu.utn.frbb.tup.exceptions.MaximoCuentasException;
+import ar.edu.utn.frbb.tup.exceptions.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -58,6 +55,16 @@ public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHa
         error.setErrorMessage(exceptionMessage);
         return handleExceptionInternal(ex, error,
                 new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
+
+    @ExceptionHandler(value = {ClienteSinCuentasException.class})
+    protected ResponseEntity<Object> handleClienteSinCuentasException(
+            RuntimeException ex, WebRequest request) {
+        String exceptionMessage = ex.getMessage();
+        CustomApiError error = new CustomApiError();
+        error.setErrorCode(204); // El codigo 204 HTTP indica que la solicitud fue exitosa pero que no hay contendio
+        error.setErrorMessage(exceptionMessage);
+        return handleExceptionInternal(ex, null, new HttpHeaders(), HttpStatus.NO_CONTENT, request);
     }
 
 

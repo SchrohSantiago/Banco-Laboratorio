@@ -7,9 +7,10 @@ import java.util.Map;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.persistence.entity.ClienteEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class ClienteDao extends AbstractBaseDao{
 
     @Autowired

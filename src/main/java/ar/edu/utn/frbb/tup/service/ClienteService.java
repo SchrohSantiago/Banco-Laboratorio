@@ -53,6 +53,7 @@ public class ClienteService {
 
 
     public Cliente buscarClientePorDni(long dni) throws ClienteNotFoundException {
+
         if (clienteDao.find(dni) == null) {
             throw new ClienteNotFoundException("El cliente no existe");
         }

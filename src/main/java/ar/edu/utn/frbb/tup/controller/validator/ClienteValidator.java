@@ -1,12 +1,20 @@
 package ar.edu.utn.frbb.tup.controller.validator;
 
 import ar.edu.utn.frbb.tup.controller.dto.ClienteDto;
+import ar.edu.utn.frbb.tup.exceptions.ClienteNotFoundException;
+import ar.edu.utn.frbb.tup.exceptions.ClienteSinCuentasException;
+import ar.edu.utn.frbb.tup.model.Cliente;
+import ar.edu.utn.frbb.tup.service.ClienteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
 @Component
 public class ClienteValidator {
+
+    @Autowired
+    ClienteService clienteService;
 
     public void validate(ClienteDto clienteDto) {
         if (clienteDto == null) {  // Validamos que no sea un JSON null
@@ -43,6 +51,16 @@ public class ClienteValidator {
         if(camposInvalidos) {
             throw new IllegalArgumentException("Los unicos campos que se pueden modificar son: DIRECCION, TELEFONO y BANCO");
         }
+    }
+
+    public void noCuentas(long dni) throws ClienteSinCuentasException, ClienteNotFoundException {
+
+        Cliente cliente = clienteService.buscarClientePorDni(dni);
+
+        if (cliente.getCuentas().isEmpty()){
+            throw new ClienteSinCuentasException("El cliente no posee cuentas");
+        }
+
     }
 
 

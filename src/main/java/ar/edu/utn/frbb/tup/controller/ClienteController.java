@@ -2,12 +2,16 @@ package ar.edu.utn.frbb.tup.controller;
 import ar.edu.utn.frbb.tup.controller.dto.ClienteDto;
 import ar.edu.utn.frbb.tup.controller.validator.ClienteValidator;
 import ar.edu.utn.frbb.tup.exceptions.ClienteNotFoundException;
+import ar.edu.utn.frbb.tup.exceptions.ClienteSinCuentasException;
 import ar.edu.utn.frbb.tup.exceptions.EdadInvalidaException;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.exceptions.ClienteAlreadyExistsException;
+import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/cliente")
@@ -30,6 +34,19 @@ public class ClienteController {
     @GetMapping("/{dni}")
     public Cliente obtenerClientePorDni(@PathVariable long dni) throws ClienteNotFoundException {
         return clienteService.buscarClientePorDni(dni);
+    }
+
+    @GetMapping("/cuentas/{dni}") // Endpoint para obtener todas las cuentas del usuario
+    public List<Cuenta> obtenerTodasLasCuentas(@PathVariable long dni) throws ClienteSinCuentasException, ClienteNotFoundException {
+        try {
+            Cliente cliente = clienteService.buscarClientePorDni(dni);
+            clienteValidator.noCuentas(dni);
+            return cliente.getCuentas();
+        } catch (RuntimeException e){
+            throw new ClienteSinCuentasException("El cliente no posee cuentas");
+        }
+
+
     }
 
     @DeleteMapping("/{dni}")
