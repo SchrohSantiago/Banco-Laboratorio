@@ -1,5 +1,6 @@
 package ar.edu.utn.frbb.tup.model;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import ar.edu.utn.frbb.tup.controller.dto.MovimientosDto;
 import ar.edu.utn.frbb.tup.controller.dto.MovimientosSimplesDto;
@@ -39,6 +40,10 @@ public class Movimiento{
         return monto;
     }
 
+    public TipoMoneda getTipoMoneda() {
+        return tipoMoneda;
+    }
+
     public LocalDateTime getFecha() {
         return fecha;
     }
@@ -71,5 +76,18 @@ public class Movimiento{
     @Override
     public String toString() {
             return "\n Tipo de Operacion: " + getTipoOperacion() + "\n Monto: " + getMonto() + "\n Fecha: " + getFecha();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Movimiento that = (Movimiento) o;
+        return tipoMoneda == that.tipoMoneda;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(tipoMoneda);
     }
 }

@@ -3,6 +3,7 @@ package ar.edu.utn.frbb.tup.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import ar.edu.utn.frbb.tup.controller.dto.CuentaDetalladaDto;
 import ar.edu.utn.frbb.tup.model.enums.TipoCuenta;
@@ -14,13 +15,13 @@ public class Cuenta {
     private TipoCuenta tipoCuenta;
     private long numeroCuenta;
     private LocalDateTime fechaCreacion;
-    private Double balance = 0.0; // Cambiamos el tipo de balance a double para manejar montos decimales
+    private Double balance = 0d; // Cambiamos el tipo de balance a double para manejar montos decimales
     List<Movimiento> movimientos;
 
     public Cuenta(){};
     public Cuenta(CuentaDetalladaDto cuentaDto) {
         this.tipoMoneda = TipoMoneda.fromString(cuentaDto.getTipoMoneda());
-        this.balance = 0d;
+        this.balance = getBalance();
         this.dniTitular = cuentaDto.getDniTitular();
         this.fechaCreacion = LocalDateTime.now();
         this.movimientos = new ArrayList<>();   // Cuando se crea un objeto de cuenta se genera un ArrayList vacio para los movimientos
@@ -102,5 +103,18 @@ public class Cuenta {
                 ", fechaCreacion=" + fechaCreacion +
                 ", balance=" + balance +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cuenta cuenta = (Cuenta) o;
+        return tipoMoneda == cuenta.tipoMoneda;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(tipoMoneda);
     }
 }

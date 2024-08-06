@@ -46,4 +46,18 @@ public class CuentaEntity extends BaseEntity{
         
         return cuenta;
     }
+
+    @Override
+    public String toString() {
+        return "CuentaEntity{" +
+                "balance=" + balance +
+                ", dniTitular=" + dniTitular +
+                ", fechaCreacion=" + fechaCreacion +
+                ", movimientos=" + movimientos +
+                ", nombre='" + nombre + '\'' +
+                ", numeroCuenta=" + numeroCuenta +
+                ", tipoCuenta='" + tipoCuenta + '\'' +
+                ", tipoMoneda='" + tipoMoneda + '\'' +
+                '}';
+    }
 }

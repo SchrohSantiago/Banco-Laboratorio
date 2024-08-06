@@ -16,8 +16,6 @@ import java.time.Period;
 
 @Service
 public class ClienteService {
-    @Autowired
-    private CuentaDao cuentaDao;
 
     @Autowired
     private ClienteDao clienteDao;

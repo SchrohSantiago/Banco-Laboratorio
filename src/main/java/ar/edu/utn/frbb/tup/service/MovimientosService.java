@@ -2,6 +2,10 @@ package ar.edu.utn.frbb.tup.service;
 
 import ar.edu.utn.frbb.tup.controller.dto.MovimientosDto;
 import ar.edu.utn.frbb.tup.controller.dto.MovimientosSimplesDto;
+import ar.edu.utn.frbb.tup.exceptions.CuentaNotFoundException;
+import ar.edu.utn.frbb.tup.exceptions.CuentaSinFondosException;
+import ar.edu.utn.frbb.tup.exceptions.DiferenteMonedaException;
+import ar.edu.utn.frbb.tup.model.enums.TipoMoneda;
 import ar.edu.utn.frbb.tup.model.enums.TipoOperacion;
 import ar.edu.utn.frbb.tup.model.Movimiento;
 import ar.edu.utn.frbb.tup.model.Cuenta;
@@ -14,20 +18,28 @@ public class MovimientosService {
     @Autowired
     CuentaDao cuentaDao;
 
-    public void depositar(MovimientosSimplesDto movimientosSimplesDto) {
+    @Autowired
+    BanelcoService banelcoService;
+
+    public void depositar(MovimientosSimplesDto movimientosSimplesDto) throws CuentaNotFoundException, DiferenteMonedaException {
         Cuenta cuenta = cuentaDao.find(movimientosSimplesDto.getNumeroCuenta());
+
         if (cuenta != null) {
-            cuenta.setBalance(cuenta.getBalance() + movimientosSimplesDto.getMonto());
             Movimiento movimiento = new Movimiento(movimientosSimplesDto);
-            movimiento.setTipoOperacion(TipoOperacion.DEPOSITO);
-            cuenta.addMovimiento(movimiento);
-            cuentaDao.save(cuenta);
+            if (cuenta.getTipoMoneda().equals(movimiento.getTipoMoneda())) {
+                cuenta.setBalance(cuenta.getBalance() + movimientosSimplesDto.getMonto());
+                movimiento.setTipoOperacion(TipoOperacion.DEPOSITO);
+                cuenta.addMovimiento(movimiento);
+                cuentaDao.save(cuenta);
+            } else {
+                throw new DiferenteMonedaException("No coinciden las monedas");
+            }
         } else {
-            System.out.println("La cuenta no existe.");
+            throw new CuentaNotFoundException("El numero de cuenta ingresado no coincide con una cuenta existente");
         }
     }
 
-    public void retirar(MovimientosSimplesDto movimientosSimplesDto) {
+    public void retirar(MovimientosSimplesDto movimientosSimplesDto) throws CuentaNotFoundException, CuentaSinFondosException {
         Cuenta cuenta = cuentaDao.find(movimientosSimplesDto.getNumeroCuenta());
         if (cuenta != null) {
             if (cuenta.getBalance() >= movimientosSimplesDto.getMonto()) {
@@ -37,35 +49,87 @@ public class MovimientosService {
                 cuenta.addMovimiento(movimiento);
                 cuentaDao.save(cuenta);
             } else {
-                System.out.println("Saldo insuficiente.");
+                throw new CuentaSinFondosException("El monto supera al dinero disponible en la cuenta");
             }
         } else {
-            System.out.println("La cuenta no existe.");
+            throw new CuentaNotFoundException("El numero de cuenta ingresado no coincide con una cuenta existente");
         }
     }
 
-    public void transferir(MovimientosDto movimientosDto) {
+    public void transferir(MovimientosDto movimientosDto) throws CuentaNotFoundException, CuentaSinFondosException, DiferenteMonedaException {
         Cuenta cuentaOrigen = cuentaDao.find(movimientosDto.getCuentaOrigen());
         Cuenta cuentaDestino = cuentaDao.find(movimientosDto.getCuentaDestino());
 
-        if (cuentaOrigen != null && cuentaDestino != null) {
-            if (cuentaOrigen.getBalance() >= movimientosDto.getMonto()) {
-                cuentaOrigen.setBalance(cuentaOrigen.getBalance() - movimientosDto.getCuentaOrigen());
-                cuentaDestino.setBalance(cuentaDestino.getBalance() + movimientosDto.getCuentaOrigen());
+        if (cuentaOrigen != null) {
+            Movimiento movimiento = new Movimiento(movimientosDto);
+            boolean a = cuentaOrigen.getTipoMoneda().equals(movimiento.getTipoMoneda());
+            System.out.println("a = " + a);
+            if (cuentaOrigen.getTipoMoneda().equals(movimiento.getTipoMoneda())) {
 
-                Movimiento movimientoOrigen = new Movimiento(movimientosDto);
-                Movimiento movimientoDestino = new Movimiento(movimientosDto);
+                if (cuentaDestino != null) {
 
-                cuentaOrigen.addMovimiento(movimientoOrigen);
-                cuentaDestino.addMovimiento(movimientoDestino);
+                    if (cuentaOrigen.getBalance() >= movimientosDto.getMonto()) {
 
-                cuentaDao.save(cuentaOrigen);
-                cuentaDao.save(cuentaDestino);
+                        if (cuentaOrigen.getTipoMoneda().equals(cuentaDestino.getTipoMoneda())) {
+
+                            // Expresion ternaria si la moneda es igual a PESO el cargo es de 2% caso contrario %0.5
+                            double cargo = movimientosDto.getTipoMoneda().equals("P") ? 0.02 : 0.005;
+                            System.out.println(cargo);
+                            double montoCargo = movimientosDto.getMonto() > 1000000d && movimientosDto.getTipoMoneda().equals("P")
+                                    || movimientosDto.getMonto() > 5000d && movimientosDto.getTipoMoneda().equals("D") ? cargo : 0d;
+                            System.out.println(montoCargo);
+
+                            double descuento = movimientosDto.getMonto() > 0d ? movimientosDto.getMonto() * cargo : 0d;
+
+                            cuentaOrigen.setBalance(cuentaOrigen.getBalance() - movimientosDto.getMonto());
+                            System.out.println(movimientosDto.getMonto() - descuento);
+                            cuentaDestino.setBalance(cuentaDestino.getBalance() + (movimientosDto.getMonto() - descuento));
+
+                            Movimiento movimientoOrigen = new Movimiento(movimientosDto);
+                            Movimiento movimientoDestino = new Movimiento(movimientosDto);
+
+                            movimientoOrigen.setTipoOperacion(TipoOperacion.TRANSFERENCIA);
+                            movimientoDestino.setTipoOperacion(TipoOperacion.TRANSFERENCIA);
+
+                            cuentaOrigen.addMovimiento(movimientoOrigen);
+                            cuentaDestino.addMovimiento(movimientoDestino);
+
+                            cuentaDao.save(cuentaOrigen);
+                            cuentaDao.save(cuentaDestino);
+                        } else {
+                            throw new DiferenteMonedaException("Las monedas entre cuentas debe ser la misma");
+                        }
+                    } else {
+                        throw new CuentaSinFondosException("El monto supera al dinero disponible en la cuenta");
+                    }
+
+                } else {
+                    // Invocacion al servicio balenco
+                    Boolean transferenciaExterna = banelcoService.transferenciaBanelco(
+                           // cuentaOrigen.getNumeroCuenta(),
+                           // cuentaDestino.getNumeroCuenta(),
+                           // movimientosDto.getMonto()
+                    );
+
+                    System.out.println(transferenciaExterna);
+
+                    if (transferenciaExterna) {
+                        cuentaOrigen.setBalance(cuentaOrigen.getBalance() - movimientosDto.getMonto());
+                        cuentaDao.save(cuentaOrigen);
+                        System.out.println("Transferencia externa exitosa.");
+                    } else {
+                        throw new CuentaNotFoundException("La cuenta externa no existe");
+                    }
+
+                }
             } else {
-                System.out.println("Saldo insuficiente en la cuenta origen.");
+                throw new DiferenteMonedaException("Son diferentes monedas");
             }
         } else {
-            System.out.println("Una o ambas cuentas no existen.");
+            throw new CuentaNotFoundException("La cuenta de origen no existe");
         }
     }
 }
+
+
+

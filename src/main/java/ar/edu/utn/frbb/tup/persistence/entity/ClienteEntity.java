@@ -62,4 +62,11 @@ public class ClienteEntity extends BaseEntity {
 
         return cliente;
     }
+
+    @Override
+    public String toString() {
+        return "ClienteEntity{" +
+                ", cuentas=" + cuentas +
+                '}';
+    }
 }

@@ -44,7 +44,7 @@ public class CuentaService {
             if (cDto.getTipoCuenta().equals("CT") && numCuentasCT >= 2) {
                 throw new MaximoCuentasException("El cliente ya tiene el máximo permitido de 2 cuentas corrientes");
             } else if (cDto.getTipoCuenta().equals("CA") && numCuentasCA >= 2) {
-                throw new MaximoCuentasException("El cliente ya tiene el máximo permitido de 2 cuentas en dólares");
+                throw new MaximoCuentasException("El cliente ya tiene el máximo permitido de 2 cuentas de Caja de Ahorro");
             } else if (cDto.getTipoCuenta().equals("PF") && numCuentasPF >= 1) {
                 throw new MaximoCuentasException("El cliente ya tiene el máximo permitido de 1 cuenta a plazo fijo");
             }
