@@ -5,6 +5,12 @@ public class MovimientosSimplesDto { // este nuevo DTO es para realizar movimien
     private String tipoMoneda;
     private long numeroCuenta;
 
+    public MovimientosSimplesDto(Double monto, long numeroCuenta, String tipoMoneda) {
+        this.monto = monto;
+        this.numeroCuenta = numeroCuenta;
+        this.tipoMoneda = tipoMoneda;
+    }
+
     public Double getMonto() {
         return monto;
     }

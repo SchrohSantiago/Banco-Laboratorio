@@ -27,6 +27,7 @@ public class Cliente extends Persona {
         cbu = generarCbu();
     }
 
+
     public TipoPersona getTipoPersona() {
         return tipoPersona;
     }

@@ -11,6 +11,12 @@ public class CuentaDetalladaDto {  // Creamos dos DTO de la clase Cuenta
     private String tipoCuenta;
     private String tipoMoneda;
 
+    public CuentaDetalladaDto(long dniTitular, String tipoCuenta, String tipoMoneda) {
+        this.dniTitular = dniTitular;
+        this.tipoCuenta = tipoCuenta;
+        this.tipoMoneda = tipoMoneda;
+    }
+
     public String getTipoMoneda() {
         return tipoMoneda;
     }

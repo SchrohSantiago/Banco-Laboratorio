@@ -5,6 +5,7 @@ import ar.edu.utn.frbb.tup.exceptions.ClienteAlreadyExistsException;
 import ar.edu.utn.frbb.tup.exceptions.ClienteNotFoundException;
 import ar.edu.utn.frbb.tup.exceptions.EdadInvalidaException;
 import ar.edu.utn.frbb.tup.model.Cliente;
+import ar.edu.utn.frbb.tup.persistence.ClienteDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

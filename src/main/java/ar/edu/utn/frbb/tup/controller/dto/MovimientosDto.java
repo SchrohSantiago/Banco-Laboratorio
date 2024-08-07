@@ -11,6 +11,13 @@ public class MovimientosDto {
     private long cuentaDestino;
     private String tipoMoneda;
 
+    public MovimientosDto(long cuentaDestino, long cuentaOrigen, Double monto, String tipoMoneda) {
+        this.cuentaDestino = cuentaDestino;
+        this.cuentaOrigen = cuentaOrigen;
+        this.monto = monto;
+        this.tipoMoneda = tipoMoneda;
+    }
+
     public Double getMonto() {
         return monto;
     }
