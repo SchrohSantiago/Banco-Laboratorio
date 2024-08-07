@@ -7,14 +7,26 @@ import ar.edu.utn.frbb.tup.controller.dto.MovimientosSimplesDto;
 import ar.edu.utn.frbb.tup.model.enums.TipoMoneda;
 import ar.edu.utn.frbb.tup.model.enums.TipoOperacion;
 import ar.edu.utn.frbb.tup.model.Cuenta;
+import com.fasterxml.jackson.annotation.JsonView;
 
 public class Movimiento{
 
+    @JsonView(Views.Public.class)
     private TipoOperacion tipoOperacion;
+
+    @JsonView(Views.Public.class)
     private Double monto;
+
+    @JsonView(Views.Public.class)
     private LocalDateTime fecha;
+
+    @JsonView(Views.Public.class)
     private TipoMoneda tipoMoneda;
+
+    @JsonView(Views.Transferencia.class)
     private long cuentaOrigen;
+
+    @JsonView(Views.Transferencia.class)
     private long cuentaDestino;
 
     // Este constructor sera utilizado para las operaciones de monto y retiro

@@ -2,6 +2,7 @@ package ar.edu.utn.frbb.tup.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,7 +17,7 @@ public class Cuenta {
     private long numeroCuenta;
     private LocalDateTime fechaCreacion;
     private Double balance = 0d; // Cambiamos el tipo de balance a double para manejar montos decimales
-    List<Movimiento> movimientos;
+    LinkedList<Movimiento> movimientos;
 
     public Cuenta(){};
     public Cuenta(CuentaDetalladaDto cuentaDto) {
@@ -24,7 +25,7 @@ public class Cuenta {
         this.balance = getBalance();
         this.dniTitular = cuentaDto.getDniTitular();
         this.fechaCreacion = LocalDateTime.now();
-        this.movimientos = new ArrayList<>();   // Cuando se crea un objeto de cuenta se genera un ArrayList vacio para los movimientos
+        this.movimientos = new LinkedList<>();   // Cuando se crea un objeto de cuenta se genera un ArrayList vacio para los movimientos
         this.numeroCuenta = generarNumeroCuenta(); // Se genera un numero de cuenta automatico con la creacion del objeto
         this.tipoCuenta = TipoCuenta.fromString(cuentaDto.getTipoCuenta());
     }
@@ -81,11 +82,11 @@ public class Cuenta {
         this.movimientos.add(movimiento);
     }
 
-    public List<Movimiento> getMovimientos() {
+    public LinkedList<Movimiento> getMovimientos() {
         return movimientos;
     }
 
-    public void setMovimientos(List<Movimiento> movimientos) {
+    public void setMovimientos(LinkedList<Movimiento> movimientos) {
         this.movimientos = movimientos;
     }
 

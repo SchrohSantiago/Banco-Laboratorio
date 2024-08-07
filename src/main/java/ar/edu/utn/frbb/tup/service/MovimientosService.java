@@ -62,40 +62,20 @@ public class MovimientosService {
 
         if (cuentaOrigen != null) {
             Movimiento movimiento = new Movimiento(movimientosDto);
-            boolean a = cuentaOrigen.getTipoMoneda().equals(movimiento.getTipoMoneda());
-            System.out.println("a = " + a);
-            if (cuentaOrigen.getTipoMoneda().equals(movimiento.getTipoMoneda())) {
 
-                if (cuentaDestino != null) {
+            if (cuentaOrigen.getTipoMoneda().equals(movimiento.getTipoMoneda())) {  // Validamos que el tipo de moneda que se introduce en el JSON sea el mismo que la cuenta
 
-                    if (cuentaOrigen.getBalance() >= movimientosDto.getMonto()) {
+                if (cuentaDestino != null) { // Si la cuenta destino no existe en nuestro banco "Utilizamos" el servicio Banelco
 
-                        if (cuentaOrigen.getTipoMoneda().equals(cuentaDestino.getTipoMoneda())) {
+                    if (cuentaOrigen.getBalance() >= movimientosDto.getMonto()) {  // Claramente el balance de la cuenta tiene que ser mayor al monto a transferir
 
-                            // Expresion ternaria si la moneda es igual a PESO el cargo es de 2% caso contrario %0.5
-                            double cargo = movimientosDto.getTipoMoneda().equals("P") ? 0.02 : 0.005;
-                            System.out.println(cargo);
-                            double montoCargo = movimientosDto.getMonto() > 1000000d && movimientosDto.getTipoMoneda().equals("P")
-                                    || movimientosDto.getMonto() > 5000d && movimientosDto.getTipoMoneda().equals("D") ? cargo : 0d;
-                            System.out.println(montoCargo);
+                        if (cuentaOrigen.getTipoMoneda().equals(cuentaDestino.getTipoMoneda())) { // Si el tipo de moneda de la cuenta origen coincide con el tipo de moneda de la cuentaDestino
 
-                            double descuento = movimientosDto.getMonto() > 0d ? movimientosDto.getMonto() * cargo : 0d;
 
-                            cuentaOrigen.setBalance(cuentaOrigen.getBalance() - movimientosDto.getMonto());
-                            System.out.println(movimientosDto.getMonto() - descuento);
-                            cuentaDestino.setBalance(cuentaDestino.getBalance() + (movimientosDto.getMonto() - descuento));
+                            cuentaOrigen.setBalance(cuentaOrigen.getBalance() - movimientosDto.getMonto()); // A la cuenta origen se le "retiran" ejemplo 10000 dolares
+                            cuentaDestino.setBalance(cuentaDestino.getBalance() + (movimientosDto.getMonto() - calcularDescuento(movimientosDto))); // A la cuenta destino le llega el monto con el descuento incluido
 
-                            Movimiento movimientoOrigen = new Movimiento(movimientosDto);
-                            Movimiento movimientoDestino = new Movimiento(movimientosDto);
-
-                            movimientoOrigen.setTipoOperacion(TipoOperacion.TRANSFERENCIA);
-                            movimientoDestino.setTipoOperacion(TipoOperacion.TRANSFERENCIA);
-
-                            cuentaOrigen.addMovimiento(movimientoOrigen);
-                            cuentaDestino.addMovimiento(movimientoDestino);
-
-                            cuentaDao.save(cuentaOrigen);
-                            cuentaDao.save(cuentaDestino);
+                            registrarTransferencias(movimientosDto, cuentaOrigen, cuentaDestino); // Incluimos este metodo para hacer mas legible el codigo
                         } else {
                             throw new DiferenteMonedaException("Las monedas entre cuentas debe ser la misma");
                         }
@@ -105,28 +85,64 @@ public class MovimientosService {
 
                 } else {
                     // Invocacion al servicio balenco
-                    Boolean transferenciaExterna = banelcoService.transferenciaBanelco(
-                           // cuentaOrigen.getNumeroCuenta(),
-                           // cuentaDestino.getNumeroCuenta(),
-                           // movimientosDto.getMonto()
-                    );
-
-                    System.out.println(transferenciaExterna);
-
-                    if (transferenciaExterna) {
-                        cuentaOrigen.setBalance(cuentaOrigen.getBalance() - movimientosDto.getMonto());
-                        cuentaDao.save(cuentaOrigen);
-                        System.out.println("Transferencia externa exitosa.");
-                    } else {
-                        throw new CuentaNotFoundException("La cuenta externa no existe");
-                    }
-
+                    invocacionServicioBanelco(movimiento, movimientosDto, cuentaOrigen);
                 }
             } else {
                 throw new DiferenteMonedaException("Son diferentes monedas");
             }
         } else {
             throw new CuentaNotFoundException("La cuenta de origen no existe");
+        }
+    }
+
+    public double calcularDescuento(MovimientosDto movimientosDto){
+        double descuento;
+        // Expresion ternaria si la moneda es igual a PESO el cargo es de 2% caso contrario %0.5
+        double cargo = movimientosDto.getTipoMoneda().equals("P") ? 0.02 : 0.005;
+
+        // Dependiendo el tipo de moneda es el monto minimo en el cual se cobra el recargo, en el caso de que la transferencia segun su tipo de moneda sea menor al maximo monto sin recargo devuelve 0
+        double montoCargo = movimientosDto.getMonto() > 1000000d && movimientosDto.getTipoMoneda().equals("P")
+                || movimientosDto.getMonto() > 5000d && movimientosDto.getTipoMoneda().equals("D") ? cargo : 0d;
+
+
+        return descuento = montoCargo > 0d ? movimientosDto.getMonto() * cargo : 0d; // Si el montoCargo es mayor a 0 significa que el monto supera el maximo de transferencia sin cargo, por ende directamente multiplica el monto por el porcentaje de recago, caso contrario devuelve 0
+    }
+
+    public void registrarTransferencias(MovimientosDto movimientosDto, Cuenta cuentaOrigen, Cuenta cuentaDestino){
+        Movimiento movimientoOrigen = new Movimiento(movimientosDto);
+        Movimiento movimientoDestino = new Movimiento(movimientosDto);
+
+        movimientoOrigen.setTipoOperacion(TipoOperacion.TRANSFERENCIA);
+        movimientoDestino.setTipoOperacion(TipoOperacion.TRANSFERENCIA);
+
+        cuentaOrigen.addMovimiento(movimientoOrigen);
+        cuentaDestino.addMovimiento(movimientoDestino);
+
+        cuentaDao.save(cuentaOrigen);
+        cuentaDao.save(cuentaDestino);
+    }
+
+    public void invocacionServicioBanelco(Movimiento movimiento, MovimientosDto movimientosDto, Cuenta cuentaOrigen) throws CuentaNotFoundException, CuentaSinFondosException {
+        if (cuentaOrigen.getBalance() >= movimientosDto.getMonto()) {
+
+            Boolean transferenciaExterna = banelcoService.transferenciaBanelco( // invocamos a la simulacion del  servicio Banelco el cual retorna de manera random un numero entre 1 a 100, si el numero es menor a 70 la cuenta "existe"
+                    // cuentaOrigen.getNumeroCuenta(),
+                    // cuentaDestino.getNumeroCuenta(),
+                    // movimientosDto.getMonto()
+            );
+
+            if (transferenciaExterna) {
+                cuentaOrigen.setBalance(cuentaOrigen.getBalance() - movimientosDto.getMonto());
+                movimiento.setTipoOperacion(TipoOperacion.TRANSFERENCIA);
+                cuentaOrigen.addMovimiento(movimiento);
+                cuentaDao.save(cuentaOrigen);
+
+                System.out.println("Transferencia externa exitosa.");
+            } else {
+                throw new CuentaNotFoundException("La cuenta externa no existe");
+            }
+        } else {
+            throw new CuentaSinFondosException("No posee los fondos suficientes");
         }
     }
 }

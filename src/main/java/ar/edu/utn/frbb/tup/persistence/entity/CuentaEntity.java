@@ -4,12 +4,10 @@ import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.model.enums.TipoCuenta;
 import ar.edu.utn.frbb.tup.model.enums.TipoMoneda;
-import ar.edu.utn.frbb.tup.persistence.ClienteDao;
 import ar.edu.utn.frbb.tup.model.Movimiento;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 public class CuentaEntity extends BaseEntity{
     String nombre;
@@ -20,7 +18,7 @@ public class CuentaEntity extends BaseEntity{
     long numeroCuenta;
     String tipoMoneda;
 
-    List<Movimiento> movimientos = new ArrayList<>();
+    LinkedList<Movimiento> movimientos = new LinkedList<>();
     
     public CuentaEntity(Cuenta cuenta) {
         this.numeroCuenta = cuenta.getNumeroCuenta();

@@ -36,19 +36,6 @@ public class ClienteController {
         return clienteService.buscarClientePorDni(dni);
     }
 
-    @GetMapping("/cuentas/{dni}") // Endpoint para obtener todas las cuentas del usuario
-    public List<Cuenta> obtenerTodasLasCuentas(@PathVariable long dni) throws ClienteSinCuentasException, ClienteNotFoundException {
-        try {
-            Cliente cliente = clienteService.buscarClientePorDni(dni);
-            clienteValidator.noCuentas(dni);
-            return cliente.getCuentas();
-        } catch (RuntimeException e){
-            throw new ClienteSinCuentasException("El cliente no posee cuentas");
-        }
-
-
-    }
-
     @DeleteMapping("/{dni}")
     public Cliente eliminarClientePorDni(@PathVariable long dni) throws ClienteNotFoundException {
         return clienteService.eliminarClientPorDni(dni);

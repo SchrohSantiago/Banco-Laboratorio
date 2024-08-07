@@ -27,10 +27,11 @@ public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHa
 
     @ExceptionHandler(value = {ClienteNotFoundException.class})
     protected ResponseEntity<Object> handleClienteNotFoundException(
-            Exception ex, WebRequest request) {
+            RuntimeException ex, WebRequest request) {
+        String exceptionMessage = ex.getMessage();
         CustomApiError error = new CustomApiError();
         error.setErrorCode(404);
-        error.setErrorMessage("Cliente inexistente: "+ ex.getMessage());
+        error.setErrorMessage(exceptionMessage);
         return handleExceptionInternal(ex, error,
                 new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
