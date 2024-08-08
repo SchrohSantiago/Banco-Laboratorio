@@ -6,7 +6,7 @@ import ar.edu.utn.frbb.tup.model.enums.TipoCuenta;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class CuentaDetalladaDto {  // Creamos dos DTO de la clase Cuenta
+public class CuentaDetalladaDto {
     private long dniTitular;
     private String tipoCuenta;
     private String tipoMoneda;

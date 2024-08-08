@@ -28,17 +28,18 @@ public class CuentaService {
             throw new ClienteNotFoundException("El cliente no existe");
         }
 
-        long numCuentasCT = cliente.getCuentas().stream()
-                .filter(c -> c.getTipoCuenta().equals(TipoCuenta.CUENTA_CORRIENTE))
+        long numCuentasCT = cliente.getCuentas().stream()   // Stream es la programacion funcional de java, utiliza expresiones lambda y metodos que nos provee dicha libreria como Reduce, Map, Filter
+                .filter(c -> c.getTipoCuenta().equals(TipoCuenta.CUENTA_CORRIENTE)) // Lo que hace es filtrar por cada tipo de Cuenta Corriente y luego utiliza el count() que basicamente es un contador
                 .count();
         long numCuentasCA = cliente.getCuentas().stream()
-                .filter(c -> c.getTipoCuenta().equals(TipoCuenta.CAJA_AHORRO))
+                .filter(c -> c.getTipoCuenta().equals(TipoCuenta.CAJA_AHORRO))  // Esto mismo con cada tipo de cuenta
                 .count();
         long numCuentasPF = cliente.getCuentas().stream()
                 .filter(c -> c.getTipoCuenta().equals(TipoCuenta.PLAZO_FIJO))
                 .count();
 
-        // Verificar los límites de cuentas
+        // Verificar los limites de cuentas
+        // Entonces por decision propia en nuestro banco un cliente puede tener maximo dos Cuenta Corrientes, dos Cajas de Ahorro y una sola cuenta de Plazo Fijo
         if (cDto.getTipoCuenta().equals("CT") && numCuentasCT >= 2) {
             throw new MaximoCuentasException("El cliente ya tiene el máximo permitido de 2 cuentas corrientes");
         } else if (cDto.getTipoCuenta().equals("CA") && numCuentasCA >= 2) {
@@ -47,9 +48,9 @@ public class CuentaService {
             throw new MaximoCuentasException("El cliente ya tiene el máximo permitido de 1 cuenta a plazo fijo");
         }
 
-        Cuenta cuenta = new Cuenta(cDto);
+        Cuenta cuenta = new Cuenta(cDto);  // Tenemos que instancias a un objeto de la clase Cuenta para poder utilizarlo en el metodo cuentaDao.find
 
-        if(cuentaDao.find(cuenta.getNumeroCuenta()) != null) {
+        if(cuentaDao.find(cuenta.getNumeroCuenta()) != null) {  //
             throw new CuentaAlreadyExistsException("La cuenta ya existe");
         }
 
